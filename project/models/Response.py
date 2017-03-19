@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, Text
-from project.database.Database import Base
+from project.database.Database import Base, session
 
 
-class Responses(Base):
+class Response(Base):
     __tablename__ = "responses"
+
     id = Column(Integer, primary_key=True)
     datetime = Column(Text)
     app = Column(Text)
@@ -35,5 +36,18 @@ class Responses(Base):
         self.timestamp_start = timestamp_start
         self.timestamp_end = timestamp_end
 
-    def __repr__(self):
-        return '<Response %r>' % self.name
+    def insert(self):
+        session.add(self)
+        session.commit()
+
+    @staticmethod
+    def update():
+        session.commit()
+
+    @staticmethod
+    def find_one(entity_id):
+        return Response.query.filter(Response.id == entity_id).first()
+
+    def delete(self):
+        Response.query.filter(Response.id == self.id).delete()
+        session.commit()

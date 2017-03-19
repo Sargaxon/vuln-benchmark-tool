@@ -1,11 +1,10 @@
-from project.database.Database import session, db_create, engine
-from project.models.Requests import Requests
+from project.models.Request import Request
 
 
 def request_insert():
     print("REQUEST INSERT")
     data = {
-        "datetime": "ab",
+        "datetime": "ab11",
         "tool": "bdf",
         "first_line_format": "cdfd",
         "method": "cfd",
@@ -19,23 +18,22 @@ def request_insert():
         "timestamp_start": "cdfd",
         "timestamp_end": "cfdf"
     }
-    session.add(Requests(**data))
-    session.commit()
+
+    request = Request()
+    request.load(data)
+    request.insert()
 
 
 def request_update():
     print("REQUEST UPDATE")
-    session.query(Requests).filter_by(host='cdd').update({"host": "UPDATED"})
-
-
-def request_query():
-    print("REQUEST QUERY")
-    for instance in session.query(Requests):
-        print(instance.host)
+    request = Request.find_one(730)
+    request.tool = "updated"
+    request.update()
 
 
 def request_delete():
     print("REQUEST DELETE")
-    session.query(Requests).filter(Requests.host == 'UPDATED').delete()
+    request = Request.find_one(730)
+    request.delete()
 
 

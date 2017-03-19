@@ -15,20 +15,10 @@ app.debug = True
 
 toolbar = DebugToolbarExtension(app)
 from project.controllers import *
-
 from project.models import *
-from project.database.Database import session, db_create
+from project.database.Database import session
 
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     session.remove()
-db_create()
-
-#crud test
-# from project.tests.crud_model_tests import *
-# request_insert()
-# request_update()
-# request_delete()
-# request_query()
-

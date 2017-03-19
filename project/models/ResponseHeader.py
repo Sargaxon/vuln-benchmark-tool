@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, Text
-from project.database.Database import Base
+from project.database.Database import Base, session
 
 
-class ResponsesHeaders(Base):
+class ResponseHeader(Base):
     __tablename__ = "responses_headers"
+
     id_response = Column(Integer, primary_key=True)
     access_control_allow_origin = Column(Text)
     accept_patch = Column(Text)
@@ -131,5 +132,18 @@ class ResponsesHeaders(Base):
         self.www_authenticate = www_authenticate
         self.x_frame_options = x_frame_options
 
-    def __repr__(self):
-        return '<ResponseHeader %r>' % self.name
+    def insert(self):
+        session.add(self)
+        session.commit()
+
+    @staticmethod
+    def update():
+        session.commit()
+
+    @staticmethod
+    def find_one(entity_id):
+        return ResponseHeader.query.filter(ResponseHeader.id == entity_id).first()
+
+    def delete(self):
+        ResponseHeader.query.filter(ResponseHeader.id == self.id).delete()
+        session.commit()

@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, Text
-from project.database.Database import Base
+from project.database.Database import Base, session
 
 
-class RequestsHeaders(Base):
+class RequestHeader(Base):
     __tablename__ = 'requests_headers'
+
     id_request = Column(Integer, primary_key=True)
     accept = Column(Text)
     accept_charset = Column(Text)
@@ -110,5 +111,18 @@ class RequestsHeaders(Base):
         self.via = via
         self.warning = warning
 
-    def __repr__(self):
-        return '<RequestHeader %r>' % self.name
+    def insert(self):
+        session.add(self)
+        session.commit()
+
+    @staticmethod
+    def update():
+        session.commit()
+
+    @staticmethod
+    def find_one(entity_id):
+        return RequestHeader.query.filter(RequestHeader.id == entity_id).first()
+
+    def delete(self):
+        RequestHeader.query.filter(RequestHeader.id == self.id).delete()
+        session.commit()

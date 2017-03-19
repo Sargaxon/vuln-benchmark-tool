@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, Text
-from project.database.Database import Base
+from project.database.Database import Base, session
 
 
-class Requests(Base):
-    __tablename__ = 'requests'
+class Request(Base):
+    __tablename__ = "requests"
+
     id = Column(Integer, primary_key=True)
     datetime = Column(Text)
     tool = Column(Text)
@@ -47,5 +48,18 @@ class Requests(Base):
         self.timestamp_start = timestamp_start
         self.timestamp_end = timestamp_end
 
-    def __repr__(self):
-        return '<Request %r>' % self.name
+    def insert(self):
+        session.add(self)
+        session.commit()
+
+    @staticmethod
+    def update():
+        session.commit()
+
+    @staticmethod
+    def find_one(entity_id):
+        return Request.query.filter(Request.id == entity_id).first()
+
+    def delete(self):
+        Request.query.filter(Request.id == self.id).delete()
+        session.commit()
