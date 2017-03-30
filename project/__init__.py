@@ -13,6 +13,8 @@ app.config.update(dict(
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 app.debug = True
 
+pages = dict()
+
 toolbar = DebugToolbarExtension(app)
 from project.controllers import *
 from project.models import *

@@ -1,0 +1,20 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>Important Page - {{ page.identifier }}</h2>
+
+    {% if form %}
+        <h3>Important form</h3>
+        <form action="{{ page.form.action }}" method="{{ page.form.method }}">
+            {{ form.csrf_token }}
+
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+
+            <input type="submit" value="Submit"/>
+        </form>
+    {% endif %}
+{% endblock %}

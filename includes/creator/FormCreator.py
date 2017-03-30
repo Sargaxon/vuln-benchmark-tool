@@ -1,52 +1,62 @@
 # -*- coding: utf-8 -*-
 from wtforms import *
 from wtforms.form import BaseForm
+from wtforms.validators import DataRequired
 
 
 class FormCreator:
-    def __init__(self):
+    def __init__(self, method, action):
         self.form = None
-        self.elements = dict()
+        self.method = method
+        self.elements = {}
+        self.action = action
 
-    def build_form(self):
-        self.form = BaseForm(self.elements)
+    def build_form(self, request, csrf = False):
+        form = BaseForm(self.elements)
 
-    def add_text_field(self, name, required):
+        if csrf:
+            form._csrf = None
+
+        form.process(request.form)
+
+        return form
+
+    def add_text_field(self, name, required=False):
         try:
-            self.elements[name] = StringField(name, validators.input_required if required else None)
+            self.elements[name] = StringField(name, [DataRequired()] if required else [])
         except KeyError as exception:
             print(exception)
 
-    def add_number_field(self, name, required):
+    def add_number_field(self, name, required=False):
         try:
-            self.elements[name] = IntegerField(name, validators.input_required if required else None)
+            self.elements[name] = IntegerField(name, [DataRequired()] if required else [])
         except KeyError as exception:
             print(exception)
 
-    def add_select_field(self, name, required, options):
+    def add_select_field(self, name, options, required=False):
         try:
             self.elements[name] = SelectField(
                 name,
-                validators.input_required if required else None,
+                [DataRequired()] if required else [],
                 choices=options
             )
         except KeyError as exception:
             print(exception)
 
-    def add_checkbox_field(self, name, required):
+    def add_checkbox_field(self, name, required=False):
         try:
             self.elements[name] = BooleanField(
                 name,
-                validators.input_required if required else None,
+                [DataRequired()] if required else []
             )
         except KeyError as exception:
             print(exception)
 
-    def add_radio_field(self, name, required):
+    def add_radio_field(self, name, required=False):
         try:
             self.elements[name] = RadioField(
                 name,
-                validators.input_required if required else None,
+                [DataRequired()] if required else []
             )
         except KeyError as exception:
             print(exception)
