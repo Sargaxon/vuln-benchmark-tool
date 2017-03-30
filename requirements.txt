@@ -1,5 +1,6 @@
 sqlalchemy
 Flask
 Flask-WTF
+WTForms
 Jinja2
 Flask-DebugToolbar
