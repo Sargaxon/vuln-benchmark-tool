@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-import random, string
+import random
+import string
+import numpy
 
 
 class Generator:
@@ -18,3 +20,7 @@ class Generator:
             characters = chars
 
         return ''.join(random.choice(characters) for _ in range(length))
+
+    @staticmethod
+    def random_number(a, b):
+        return numpy.random.randint(low=a, high=b)

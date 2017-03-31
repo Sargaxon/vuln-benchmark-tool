@@ -2,7 +2,6 @@
 
 
 class Param:
-    def __init__(self, name, value, method):
-        self.method = method
+    def __init__(self, name, value):
         self.name = name
         self.value = value

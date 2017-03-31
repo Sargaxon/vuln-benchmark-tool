@@ -11,15 +11,15 @@ class FormCreator:
         self.elements = {}
         self.action = action
 
-    def build_form(self, request, csrf = False):
-        form = BaseForm(self.elements)
+    def build_form(self, request, csrf=False):
+        base_form = BaseForm(self.elements)
 
         if csrf:
-            form._csrf = None
+            base_form._csrf = None
 
-        form.process(request.form)
+        base_form.process(request.form)
 
-        return form
+        return base_form
 
     def add_text_field(self, name, required=False):
         try:
@@ -60,4 +60,3 @@ class FormCreator:
             )
         except KeyError as exception:
             print(exception)
-

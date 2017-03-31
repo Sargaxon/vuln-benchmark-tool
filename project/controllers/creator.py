@@ -64,8 +64,16 @@ def demo():
     )
 #   form.add_radio_field("radio-field1") needs further testing
 
-    action_page = Page("demo-action")
-    page = Page("demo", dict(), form, dict())
+    pages1 = PageCreator().generate_n_pages(5, 0)
+    add_pages(pages1)
+    links1 = LinkCreator().generate_links_for_pages(pages1)
+
+    pages2 = PageCreator().generate_n_pages(5)
+    add_pages(pages2)
+    links2 = LinkCreator().generate_links_for_pages(pages2, 0)
+
+    action_page = Page("demo-action", links=links1)
+    page = Page("demo", form=form, links=links2)
 
     add_pages([page, action_page])
 

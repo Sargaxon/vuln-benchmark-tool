@@ -2,6 +2,17 @@
 {% block body %}
     <h2>Important Page - {{ page.identifier }}</h2>
 
+     {% if page.links %}
+        <h3>Real navigation</h3>
+        <ul>
+            {% for link in page.links %}
+                <li class="form-group">
+                    <a href="{{ link.href() }}">{{ link.page.identifier }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     {% if form %}
         <h3>Important form</h3>
         <form action="{{ page.form.action }}" method="{{ page.form.method }}">
