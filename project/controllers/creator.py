@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-from wtforms import StringField, IntegerField
-from wtforms.form import BaseForm
-
 from project import app
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect, make_response
 from flask_wtf import FlaskForm
 from includes.creator import *
 from project import pages as pages_session
@@ -33,6 +30,9 @@ def new():
 def browser(identifier):
     page = pages_session[identifier]
 
+    if page.__class__.__name__ == "RedirectPage":
+        return redirect(page.redirect, page.status)
+
     if page.form is not None:
         form = page.form.build_form(request)
 
@@ -42,11 +42,20 @@ def browser(identifier):
     else:
         form = {}
 
-    return render_template(
-        'creator/browser.html',
-        form=form,
-        page=page
+    response = make_response(
+        render_template(
+            'creator/browser.html',
+            form=form,
+            page=page
+        )
     )
+
+    for header in page.headers:
+        response.headers.set(header.name, header.value)
+
+    response.status_code = page.status
+
+    return response
 
 
 @app.route('/creator/demo')
@@ -65,12 +74,16 @@ def demo():
 #   form.add_radio_field("radio-field1") needs further testing
 
     pages1 = PageCreator().generate_n_pages(5, 0)
+    pages1.append(RedirectPage("demo-redirect", "/browse/demo"))
     add_pages(pages1)
-    links1 = LinkCreator().generate_links_for_pages(pages1)
+    links1 = LinkCreator().generate_links_for_page(pages1)
 
     pages2 = PageCreator().generate_n_pages(5)
+    pages2.append(Page("demo-headers", headers={
+        Header("Content-Type", "application/json")
+    }))
     add_pages(pages2)
-    links2 = LinkCreator().generate_links_for_pages(pages2, 0)
+    links2 = LinkCreator().generate_links_for_page(pages2)
 
     action_page = Page("demo-action", links=links1)
     page = Page("demo", form=form, links=links2)

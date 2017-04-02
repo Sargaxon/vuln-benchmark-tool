@@ -6,7 +6,7 @@ class PageCreator:
     def __init__(self):
         self.pages = []
 
-    def generate_n_pages(self, n, params=None):
+    def generate_n_pages(self, n, params=None, status=0, headers=None):
         for i in range(0, n):
             identifier = Generator.random_string(6, "lowercase")
 
@@ -16,6 +16,12 @@ class PageCreator:
             else:
                 page_params = params
 
-            self.pages.append(Page(identifier, params=page_params))
+            self.pages.append(Page(
+                    identifier,
+                    params=page_params,
+                    status=Generator.random_status() if status == 0 else status,
+                    headers=headers
+                )
+            )
 
         return self.pages

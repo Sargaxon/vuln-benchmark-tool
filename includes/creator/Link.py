@@ -3,9 +3,8 @@ from urllib.parse import urlencode
 
 
 class Link:
-    def __init__(self, page, headers=None):
+    def __init__(self, page):
         self.page = page
-        self.headers = headers
 
     def href(self, absolute=True):
         return ("/" if absolute else "") + "browse/" + self.page.identifier + self.url_params()

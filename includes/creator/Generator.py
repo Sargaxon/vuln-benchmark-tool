@@ -24,3 +24,17 @@ class Generator:
     @staticmethod
     def random_number(a, b):
         return numpy.random.randint(low=a, high=b)
+
+    @staticmethod
+    def random_status():
+        status_codes = [
+            101,
+            200,
+            302,
+            400,
+            403,
+            404,
+            405,
+        ]
+
+        return random.choice(status_codes)

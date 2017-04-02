@@ -17,8 +17,6 @@ class ParamCreator:
         for i in range(0, n):
             self.add_random_param()
 
-        print(self.params)
-
         return self.params
 
     def add_n_params(self, params):
