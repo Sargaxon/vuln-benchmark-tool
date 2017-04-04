@@ -9,11 +9,9 @@
         <a style="text-align:center" href="https://github.com/capJavert/vuln-benchmark-tool/">About</a>
         <a style="text-align:center" href="/creator/new">Run test</a>
         <a style="text-align:center" href="/creator/demo">Demo test</a>
+        <a style="text-align:center" href="/creator/log">Logging</a>
         <div class="page">
             <h1>Vuln benchmark tool</h1>
-            {% for message in get_flashed_messages() %}
-                <div class="flash">{{ message }}</div>
-            {% endfor %}
             {% macro render_error(field) %}
                 {% if field.errors %}
                     {% for error in field.errors %}<span class='error'>{{ error }}</span>{% endfor %}

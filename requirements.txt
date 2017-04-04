@@ -1,3 +1,4 @@
+mitmproxy
 sqlalchemy
 Flask
 Flask-WTF
