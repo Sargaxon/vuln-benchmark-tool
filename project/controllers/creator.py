@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
-import os
-
 from wtforms import StringField, IntegerField
 from wtforms.form import BaseForm
 
 from project import app
-from flask import render_template, request, redirect, session, Markup, flash
+from flask import render_template, request, redirect, session
 from flask_wtf import FlaskForm
 from includes.creator import *
 from project import pages as pages_session
-from subprocess import call
+
 
 class CreatorController(FlaskForm):
     name = "creator"
@@ -80,25 +78,3 @@ def demo():
     add_pages([page, action_page])
 
     return render_template('creator/demo.html', index="demo")
-
-
-@app.route('/creator/log')
-def log():
-    form = FormCreator("POST", "log-action")
-
-    # if request.method == 'POST':
-    #     if request.form['submit'] == 'started':
-    #         message = Markup("<p>Started</p>")
-    #         flash(message)
-    #         for i in range(0, 30):
-    #             message = Markup("<p>Sir, we have transmitted our %i. message</p>" % i)
-    #             flash(message)
-    #     elif request.form['submit'] == 'stopped':
-    #         message = Markup("<p>Stopped</p>")
-    #         flash(message)
-    #
-    # elif request.method == 'GET':
-    call(["mitmdump", "-s", "%s/Logger.py" % os.path.dirname(os.path.realpath(__file__)), "-p", "9999"])
-    return render_template('creator/log.html')
-
-

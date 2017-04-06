@@ -1,3 +1,5 @@
+from project.database.Database import session
+
 from project.models.Request import Request
 
 
@@ -19,8 +21,7 @@ def request_insert():
         "timestamp_end": "cfdf"
     }
 
-    request = Request()
-    request.load(data)
+    request = Request(**data)
     request.insert()
 
 
