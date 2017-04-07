@@ -144,6 +144,7 @@ class ResponseHeader(Base):
     def find_one(entity_id):
         return ResponseHeader.query.filter(ResponseHeader.id == entity_id).first()
 
-    def delete(self):
-        ResponseHeader.query.filter(ResponseHeader.id == self.id).delete()
+    @staticmethod
+    def delete(entity_id):
+        ResponseHeader.query.filter(ResponseHeader.id_response == entity_id).delete()
         session.commit()

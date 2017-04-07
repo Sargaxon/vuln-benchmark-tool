@@ -121,8 +121,9 @@ class RequestHeader(Base):
 
     @staticmethod
     def find_one(entity_id):
-        return RequestHeader.query.filter(RequestHeader.id == entity_id).first()
+        return RequestHeader.query.filter(RequestHeader.id_request == entity_id).first()
 
-    def delete(self):
-        RequestHeader.query.filter(RequestHeader.id == self.id).delete()
+    @staticmethod
+    def delete(entity_id):
+        RequestHeader.query.filter(RequestHeader.id_request == entity_id).delete()
         session.commit()

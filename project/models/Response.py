@@ -48,6 +48,7 @@ class Response(Base):
     def find_one(entity_id):
         return Response.query.filter(Response.id == entity_id).first()
 
-    def delete(self):
-        Response.query.filter(Response.id == self.id).delete()
+    @staticmethod
+    def delete(entity_id):
+        Response.query.filter(Response.id == entity_id).delete()
         session.commit()

@@ -1,5 +1,7 @@
 import datetime
 
+from werkzeug.datastructures import TypeConversionDict
+
 from project import app
 from flask import request, Markup, flash
 
@@ -24,17 +26,17 @@ def log_request_info():
         data = {
             "datetime": datetime.datetime.now(),
             "tool": tool_name,
-            "first_line_format": "Null",
+            "first_line_format": "null",
             "method": request.method,
-            "scheme": "Null",
+            "scheme": "null",
             "host": 'localhost',
             "port": '8080',
             "path": request.path,
             "http_version": "HTTP/1.1",
-            "headers": "Null",
+            "headers": "null",
             "content": request.data,
             "timestamp_start": str(datetime.datetime.now()),
-            "timestamp_end": "Null"
+            "timestamp_end": "null"
         }
         req = Request(**data)
         req.insert()
@@ -45,7 +47,7 @@ def log_request_info():
         for i in range(0, len(request_header_fields)):
             if request_header_fields[i] not in request.headers:
                 continue
-                # request.headers[request_header_fields[i]] = ""
+                # request.headers[request_header_fields[i]] = "null"
 
             request_header_data[request_header_fields[i].lower().replace("-", "_")] = \
                 str(request.headers[request_header_fields[i]])
@@ -53,7 +55,3 @@ def log_request_info():
         header = RequestHeader(**request_header_data)
         header.id_request = req.id
         header.insert()
-
-        # # message = Markup("<p>DATA:\n %s" % str(data) + "\n HEADERS:\n %s" % str(request_header_data) + "</p>")
-        # message = Markup("<p>HEADERS: %s" % request.headers + "</p>")
-        # flash(message)

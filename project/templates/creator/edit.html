@@ -1,0 +1,16 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>Edit</h2>
+
+    {% for field in form %}
+        <div class="form-group">
+            {{ field.label }}
+            {{ field }}
+        </div>
+    {% endfor %}
+
+    <input type="submit" value="Submit"/>
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message|safe }}</div>
+    {% endfor %}
+{% endblock %}

@@ -60,6 +60,7 @@ class Request(Base):
     def find_one(entity_id):
         return Request.query.filter(Request.id == entity_id).first()
 
-    def delete(self):
-        Request.query.filter(Request.id == self.id).delete()
+    @staticmethod
+    def delete(entity_id):
+        Request.query.filter(Request.id == entity_id).delete()
         session.commit()
