@@ -1,0 +1,16 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>Tests</h2>
+
+    <a href="/tests/new">New test</a>
+    <hr />
+
+    {% for (identifier, test) in tests.items() %}
+        <div>
+            {{ identifier }}
+            <a href="/tests/edit/{{ identifier }}">Edit</a>
+            <a href="/tests/delete/{{ identifier }}">Delete</a>
+            <a href="/{{ identifier }}/pages">Add pages</a>
+        </div>
+    {% endfor %}
+{% endblock %}

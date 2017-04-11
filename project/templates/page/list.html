@@ -1,0 +1,15 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>Pages</h2>
+
+    <a href="/{{ test_id }}/pages/new">New page</a>
+    <hr />
+
+    {% for (identifier, page) in pages.items() %}
+        <div>
+            {{ identifier }}
+            <a href="/{{ test_id }}/pages/edit/{{ identifier }}">Edit</a>
+            <a href="/{{ test_id }}/pages/delete/{{ identifier }}">Delete</a>
+        </div>
+    {% endfor %}
+{% endblock %}
