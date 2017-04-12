@@ -1,6 +1,6 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>Pages</h2>
+    <h2>Pages <a href="/tests">[Back to tests]</a></h2>
 
     <a href="/{{ test_id }}/pages/new">New page</a>
     <hr />
@@ -11,8 +11,8 @@
             <a href="/{{ test_id }}/pages/edit/{{ identifier }}">Edit</a>
             <a href="/{{ test_id }}/pages/delete/{{ identifier }}">Delete</a>
             <a href="/{{ test_id }}/{{ identifier }}/params">Add params</a>
-            <a href="/{{ test_id }}/{{ identifier }}/params">Add links</a>
-            <a href="/{{ test_id }}/{{ identifier }}/params">Edit form</a>
+            <!--<a href="/{{ test_id }}/{{ identifier }}/links">Add links</a>
+            <a href="/{{ test_id }}/{{ identifier }}/form">Edit header</a>-->
         </div>
     {% endfor %}
 {% endblock %}
