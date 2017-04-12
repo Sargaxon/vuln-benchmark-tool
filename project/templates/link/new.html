@@ -1,0 +1,11 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>New link</h2>
+    <form action="/{{ test_id }}/{{ page_id }}/links/new" method="POST">
+        {{ form.csrf_token }}
+        <dl>
+            <dd>{{ form.page.label }} {{ form.page}} {{ render_error(form.page) }}</dd>
+            <dd><input type="submit" value="Create"/></dd>
+        </dl>
+    </form>
+{% endblock %}

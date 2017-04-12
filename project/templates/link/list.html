@@ -1,0 +1,15 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>Links <a href="/{{ test_id }}/pages">[Back to pages]</a></h2>
+
+    <a href="/{{ test_id }}/{{ page_id }}/links/new">New link</a>
+    <hr />
+
+    {% for (index, link) in links %}
+        <div>
+            Link {{ index }} - {{ link.page.identifier }}
+            <a href="/{{ test_id }}/{{ page_id }}/links/edit/{{ index }}">Edit</a>
+            <a href="/{{ test_id }}/{{ page_id }}/links/delete/{{ index }}">Delete</a>
+        </div>
+    {% endfor %}
+{% endblock %}
