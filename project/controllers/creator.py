@@ -97,11 +97,11 @@ def demo():
     return render_template('creator/demo.html', index="demo")
 
 
-@app.route('/analysis')
-def analysis():
+@app.route('/analysis/<tool>')
+def analysis(tool):
     img = io.BytesIO()
 
-    Analysis.request_method()
+    Analysis.request_method(tool)
 
     plt.savefig(img, format='png')
     img.seek(0)
@@ -109,3 +109,8 @@ def analysis():
     plot_url = base64.b64encode(img.getvalue()).decode()
 
     return render_template('creator/analysis.html', plot_url=plot_url)
+
+
+@app.route('/analysis')
+def select_analysis():
+    return render_template('creator/select_analysis.html')
