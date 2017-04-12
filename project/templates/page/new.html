@@ -6,6 +6,7 @@
         <dl>
             <dd>{{ form.identifier.label }} {{ form.identifier(size=45) }} {{ render_error(form.identifier) }}</dd>
             <dd>{{ form.status.label }} {{ form.status(size=3) }} {{ render_error(form.status) }}</dd>
+            <dd>{{ form.headers.label }} {{ form.headers }} {{ render_error(form.headers) }}</dd>
             <dd><input type="submit" value="Create"/></dd>
         </dl>
     </form>

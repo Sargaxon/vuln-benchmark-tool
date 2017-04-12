@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from wtforms import StringField, IntegerField
+from wtforms import StringField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired
+from os import linesep
 
-from includes.creator import Page
+from includes.creator import Page, Header
 from project import app
 from flask import render_template, redirect, request
 from flask_wtf import FlaskForm
@@ -13,6 +14,26 @@ class PageController(FlaskForm):
     name = "page"
     identifier = StringField('identifier', validators=[DataRequired()])
     status = IntegerField('status', validators=[DataRequired()])
+    headers = TextAreaField('headers')
+
+    @staticmethod
+    def prepare_headers(raw_headers):
+        headers = []
+
+        for raw_header in raw_headers.splitlines():
+            header = raw_header.replace(": ", ":").split(":")
+            headers.append(Header(header[0], header[1]))
+
+        return headers
+
+    @staticmethod
+    def raw_headers(headers):
+        raw_headers = ""
+
+        for header in headers:
+            raw_headers += header.name + ": " + header.value + linesep
+
+        return raw_headers
 
 
 @app.route('/<test_id>/pages')
@@ -31,7 +52,7 @@ def new_page(test_id):
     form = PageController(request.form)
 
     if request.method == "POST" and form.validate():
-        page = Page(form.identifier.data, form.status.data)
+        page = Page(form.identifier.data, form.status.data, headers=PageController.prepare_headers(form.headers.data))
 
         settings.tests[test_id][page.identifier] = page
         settings.save()
@@ -50,12 +71,13 @@ def edit_page(test_id, page_id):
     form = PageController(request.form)
     form.identifier.data = page.identifier
     form.status.data = page.status
+    form.headers.data = PageController.raw_headers(page.headers)
 
     if request.method == "POST" and form.validate():
         form = PageController(request.form)
 
         del settings.tests[test_id][page_id]
-        page = Page(form.identifier.data, form.status.data)
+        page = Page(form.identifier.data, form.status.data, headers=PageController.prepare_headers(form.headers.data))
 
         settings.tests[test_id][page.identifier] = page
         settings.save()
