@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+import base64
+import io
+import matplotlib.pyplot as plt
 from project import app
 from flask import render_template, request, redirect, make_response
 from flask_wtf import FlaskForm
 from includes.creator import *
 from project import pages as pages_session
+from project.components import Analysis
 
 
 class CreatorController(FlaskForm):
@@ -91,3 +95,17 @@ def demo():
     add_pages([page, action_page])
 
     return render_template('creator/demo.html', index="demo")
+
+
+@app.route('/analysis')
+def analysis():
+    img = io.BytesIO()
+
+    Analysis.request_method()
+
+    plt.savefig(img, format='png')
+    img.seek(0)
+
+    plot_url = base64.b64encode(img.getvalue()).decode()
+
+    return render_template('creator/analysis.html', plot_url=plot_url)

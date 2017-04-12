@@ -1,0 +1,6 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>Data analysis</h2>
+    <img src="data:image/png;base64, {{ plot_url }}">
+<!--{{data | safe}}-->
+{% endblock %}
