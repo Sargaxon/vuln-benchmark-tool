@@ -11,6 +11,7 @@ app.config.update(dict(
     PASSWORD='default'
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.debug = True
 
 pages = dict()

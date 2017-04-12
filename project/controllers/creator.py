@@ -23,13 +23,6 @@ def add_page(page):
     pages_session[page.identifier] = page
 
 
-@app.route('/creator/new')
-def new():
-    pages_session = dict()
-
-    return render_template('creator/new.html')
-
-
 @app.route('/browse/<identifier>', methods=['GET', 'POST', 'PUT', 'DELETE', 'PATCH'])
 def browser(identifier):
     page = pages_session[identifier]

@@ -1,0 +1,11 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>New test</h2>
+    <form action="/tests/new" method="POST">
+        {{ form.csrf_token }}
+        <dl>
+            <dd>{{ form.identifier.label }} {{ form.identifier(size=45) }} {{ render_error(form.identifier) }}</dd>
+            <dd><input type="submit" value="Create"/></dd>
+        </dl>
+    </form>
+{% endblock %}
