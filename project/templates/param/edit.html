@@ -1,0 +1,12 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>Edit param</h2>
+    <form action="/{{ test_id }}/{{ page_id }}/params/edit/{{ form.name.data }}" method="POST">
+        {{ form.csrf_token }}
+        <dl>
+            <dd>{{ form.name.label }} {{ form.name(size=45) }} {{ render_error(form.name) }}</dd>
+            <dd>{{ form.value.label }} {{ form.value(size=45) }} {{ render_error(form.value) }}</dd>
+            <dd><input type="submit" value="Update"/></dd>
+        </dl>
+    </form>
+{% endblock %}
