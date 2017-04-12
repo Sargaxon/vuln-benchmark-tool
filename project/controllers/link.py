@@ -27,7 +27,6 @@ def list_links(test_id, page_id):
     settings = Settings.load()
 
     links = settings.tests[test_id][page_id].links
-    print(links)
 
     return render_template('link/list.html', links=enumerate(links), test_id=test_id, page_id=page_id)
 
@@ -59,7 +58,6 @@ def edit_link(test_id, page_id, link_id):
     form = LinkController(request.form)
     form.page.choices = LinkController.create_pages_drop_down(settings.tests[test_id])
     form.page.data = link.page.identifier
-    print(link.page.identifier)
 
     if request.method == "POST" and form.validate():
         form.process(request.form)
