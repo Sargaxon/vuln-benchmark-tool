@@ -1,0 +1,12 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>Run test</h2>
+
+    <form action="/creator/run/{{ test_id }}" method="POST">
+        {{ form.csrf_token }}
+        <dl>
+            <dd>{{ form.index.label }} {{ form.index}} {{ render_error(form.index) }}</dd>
+            <dd><input type="submit" value="Browse"/></dd>
+        </dl>
+    </form>
+{% endblock %}

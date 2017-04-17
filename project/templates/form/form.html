@@ -1,0 +1,23 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>Form <a href="/{{ test_id }}/pages">[Back to pages]</a></h2>
+
+    Method: {{ form_creator.method }}<br />
+    Action: {{ form_creator.action }}<br />
+    <a href="/{{ test_id }}/{{ page_id }}/form/fields/new">New field</a>
+    <a href="/{{ test_id }}/{{ page_id }}/form/new">Reset form</a>
+    <hr />
+
+    {% if form_creator %}
+        {% for identifier, element in form_creator.elements.items() %}
+            <div class="form-group">
+                {{ identifier }}
+                {{ element.element_type }}
+                {% if element.element_type == "SelectField" %}
+                    <a href="/{{ test_id }}/{{ page_id }}/form/fields/{{ identifier }}/choices">Choices</a>
+                {% endif %}
+                <a href="/{{ test_id }}/{{ page_id }}/form/fields/delete/{{ identifier }}">Delete</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

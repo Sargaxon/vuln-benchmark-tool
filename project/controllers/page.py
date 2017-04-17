@@ -77,7 +77,9 @@ def edit_page(test_id, page_id):
         form = PageController(request.form)
 
         del settings.tests[test_id][page_id]
-        page = Page(form.identifier.data, form.status.data, headers=PageController.prepare_headers(form.headers.data))
+        page.headers = PageController.prepare_headers(form.headers.data)
+        page.status = form.status.data
+        page.identifier = form.identifier.data
 
         settings.tests[test_id][page.identifier] = page
         settings.save()

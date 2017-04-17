@@ -4,6 +4,7 @@ from includes.creator.Header import Header
 from includes.creator.Page import Page
 from includes.creator.RedirectPage import RedirectPage
 from includes.creator.Link import Link
+from includes.creator.FormElement import FormElement
 from includes.creator.FormCreator import FormCreator
 from includes.creator.ParamCreator import ParamCreator
 from includes.creator.LinkCreator import LinkCreator

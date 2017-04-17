@@ -1,0 +1,14 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>Choices <a href="/{{ test_id }}/{{ page_id }}/form">[Back to form]</a></h2>
+
+    <a href="/{{ test_id }}/{{ page_id }}/form/fields/{{ field_id }}/choices/new">New choice</a>
+    <hr />
+
+    {% for (identifier, value) in choices %}
+        <div>
+            ({{ identifier }} - {{ value }})
+            <a href="/{{ test_id }}/{{ page_id }}/form/fields/{{ field_id }}/choices/delete/{{ identifier }}">Delete</a>
+        </div>
+    {% endfor %}
+{% endblock %}

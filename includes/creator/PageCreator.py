@@ -4,7 +4,7 @@ from includes.creator import Generator, Page, ParamCreator
 
 class PageCreator:
     def __init__(self):
-        self.pages = []
+        self.pages = {}
 
     def generate_n_pages(self, n, params=None, status=0, headers=None):
         for i in range(0, n):
@@ -16,12 +16,11 @@ class PageCreator:
             else:
                 page_params = params
 
-            self.pages.append(Page(
+            self.pages[identifier] = Page(
                     identifier,
                     params=page_params,
                     status=Generator.random_status() if status == 0 else status,
                     headers=headers
                 )
-            )
 
         return self.pages

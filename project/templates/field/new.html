@@ -1,0 +1,13 @@
+{% extends "layout/layout.html" %}
+{% block body %}
+    <h2>New field</h2>
+    <form action="/{{ test_id }}/{{ page_id }}/form/fields/new" method="POST">
+        {{ form.csrf_token }}
+        <dl>
+            <dd>{{ form.name.label }} {{ form.name(size=45) }} {{ render_error(form.name) }}</dd>
+            <dd>{{ form.type.label }} {{ form.type }} {{ render_error(form.type) }}</dd>
+            <dd>{{ form.required.label }} {{ form.required }} {{ render_error(form.required) }}</dd>
+            <dd><input type="submit" value="Create"/></dd>
+        </dl>
+    </form>
+{% endblock %}
