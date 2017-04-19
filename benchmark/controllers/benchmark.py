@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from benchmark import app
+from benchmark import app, PORT
 from flask import render_template, redirect, make_response
 from flask_wtf import FlaskForm
 from project.components import Settings
@@ -70,7 +70,7 @@ def log_request_info():
         "method": request.method,
         "scheme": "null",
         "host": 'localhost',
-        "port": '8080',
+        "port": PORT,
         "path": request.path,
         "http_version": "HTTP/1.1",
         "headers": "null",
