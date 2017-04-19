@@ -1,6 +1,40 @@
-{% extends "layout/layout.html" %}
-{% block body %}
-    <h2>Data analysis</h2>
-    <img src="data:image/png;base64, {{ plot_url }}">
-<!--{{data | safe}}-->
-{% endblock %}
+<html>
+    <head>
+        <title>Vuln benchmark tool</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+    </head>
+    <body>
+        <a style="text-align:center" href="{{ url_for('start') }}">Home</a>
+        <a style="text-align:center" href="https://github.com/capJavert/vuln-benchmark-tool/">About</a>
+        <a style="text-align:center" href="/tests">Tests</a>
+        <a style="text-align:center" href="/creator/demo">Demo test</a>
+        <a style="text-align:center" href="/creator/log">Log</a>
+        <a style="text-align:center" href="/analysis">Analysis</a>
+        <div class="page">
+            <h1>Vuln benchmark tool</h1>
+            <h2>Data analysis</h2>
+            {% macro render_error(field) %}
+                {% if field.errors %}
+                    {% for error in field.errors %}<span class='error'>{{ error }}</span>{% endfor %}
+                {% endif %}
+            {% endmacro %}
+            {% block body %}{% endblock %}
+        </div>
+        {% for image in images %}
+            <a class="image" href="{{ image.src }}" style="width: {{ image.width }}px; height: {{ image.height }}px">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="/images/{{ image.src }}?w={{ image.width }}&amp;h={{ image.height }}" width="{{ image.width }}" height="{{ image.height }}" />
+            </a>
+        {% endfor %}
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="https://raw.githubusercontent.com/luis-almeida/unveil/master/jquery.unveil.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('img').unveil(1000);
+            });
+        </script>
+    </body>
+
+</html>

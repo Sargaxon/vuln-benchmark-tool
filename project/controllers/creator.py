@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 import base64
 import io
+import os
+
+from io import StringIO
 import matplotlib.pyplot as plt
+from PIL import Image
+
 from project import app
-from flask import render_template, request, redirect, make_response
+from flask import render_template, request, redirect, make_response, render_template_string, send_from_directory, \
+    Response
 from flask_wtf import FlaskForm
 from includes.creator import *
 from project import pages as pages_session
@@ -92,16 +98,34 @@ def demo():
 
 @app.route('/analysis/<tool>')
 def analysis(tool):
-    img = io.BytesIO()
-
+    width = 1000
+    height = 800
     Analysis.request_method(tool)
 
-    plt.savefig(img, format='png')
-    img.seek(0)
+    images = []
+    for root, dirs, files in os.walk('.'):
+        for filename in [os.path.join(root, name) for name in files]:
+            # print("FILENAME: " + str(filename))
+            if not filename.endswith('.jpg'):
+                continue
+            im = Image.open(filename)
+            w, h = im.size
+            aspect = 1.0*w/h
+            if aspect > 1.0*width/height:
+                width = min(w, width)
+                height = width/aspect
+            else:
+                height = min(h, height)
+                width = height*aspect
+            images.append({
+                'width': int(width),
+                'height': int(height),
+                'src': filename
+            })
 
-    plot_url = base64.b64encode(img.getvalue()).decode()
-
-    return render_template('creator/analysis.html', plot_url=plot_url)
+    # print("IMAGES: " + str(images))
+    return render_template_string('{% extends "creator/analysis.html" %}',
+                                  **{'images': images})
 
 
 @app.route('/analysis')

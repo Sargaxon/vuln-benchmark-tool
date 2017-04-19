@@ -8,7 +8,7 @@ from flask import request, Markup, flash
 from project.models.Request import Request
 from project.models.RequestHeader import RequestHeader
 
-tool_name = "zaproxy"
+tool_name = "w3af"
 app_name = "vuln-benchmark-tool"
 
 request_header_fields = [
