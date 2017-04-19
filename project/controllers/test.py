@@ -43,6 +43,8 @@ def new_test():
 def edit_test(test_id):
     settings = Settings.load()
 
+    test = settings.tests[test_id]
+
     form = TestController(request.form)
     form.identifier.data = test_id
 
@@ -52,7 +54,7 @@ def edit_test(test_id):
         del settings.tests[test_id]
         test_id = form.identifier.data
 
-        settings.tests[test_id] = dict()
+        settings.tests[test_id] = test
         settings.save()
 
         return redirect("/tests", 302)
