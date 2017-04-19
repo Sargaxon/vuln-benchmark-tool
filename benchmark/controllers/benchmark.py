@@ -31,10 +31,6 @@ def browser(identifier):
     if page.form is not None:
         page.form.build_form()
         form = page.form.process_form(request)
-
-        if request.method == page.form.method:
-            if page.form.action is not None:
-                return redirect(page.form.action, code=200)
     else:
         form = {}
 

@@ -15,7 +15,7 @@
 
     {% if form %}
         <h3>Important form</h3>
-        <form action="{{ page.form.action }}" method="{{ page.form.method }}">
+        <form action="/{{ page.form.action }}" method="{{ page.form.method }}">
             {{ form.csrf_token }}
 
             {% for field in form %}
