@@ -8,6 +8,9 @@ filename = "settings.conf"
 class Settings:
     def __init__(self):
         self.tests = dict()
+        self.session = dict()
+        self.index_page = None
+        self.tool = "Unknown"
 
     def save(self):
         if not os.path.isfile(filename) or os.path.getsize(filename) == 0:

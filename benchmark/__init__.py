@@ -3,7 +3,7 @@ from flask import Flask
 from flask_debugtoolbar import DebugToolbarExtension
 __version__ = '0.2'
 
-app = Flask('project')
+app = Flask('benchmark')
 app.config.update(dict(
     DATABASE='postgresql+psycopg2://postgres:postgres@localhost:5432/postgres',
     SECRET_KEY='random',
@@ -14,15 +14,8 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.debug = True
 
-tools = [
-    ("unknown", "Unknown"),
-    ("zaproxy", "OWASP ZAP"),
-    ("burp", "Burp Suite")
-]
-
 toolbar = DebugToolbarExtension(app)
-from project.controllers import *
-from project.models import *
+from benchmark.controllers import benchmark
 from project.database.Database import session
 
 

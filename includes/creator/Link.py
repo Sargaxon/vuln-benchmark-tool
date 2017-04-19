@@ -6,7 +6,7 @@ class Link:
         self.page = page
 
     def href(self, absolute=True):
-        return ("/" if absolute else "") + "browse/" + self.page.identifier + self.url_params()
+        return ("/" if absolute else "") + self.page.identifier + self.url_params()
 
     def url_params(self):
         url_params = ""

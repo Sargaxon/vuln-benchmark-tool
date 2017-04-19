@@ -1,7 +1,13 @@
 {% extends "layout/layout.html" %}
 {% block body %}
     <h2>Demo page</h2>
-    <p>
-        <a href="/browse/{{ index }}">Browse</a>
-    </p>
+
+    <form action="/creator/demo" method="POST">
+        {{ form.csrf_token }}
+        <dl>
+            <dd>{{ form.tool.label }} {{ form.tool}} {{ render_error(form.tool) }}</dd>
+            <dd>{{ form.index.label }} {{ form.index}} {{ render_error(form.index) }}</dd>
+            <dd><input type="submit" value="Browse"/></dd>
+        </dl>
+    </form>
 {% endblock %}
