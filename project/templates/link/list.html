@@ -10,6 +10,7 @@
             Link {{ index }} - {{ link.page.identifier }}
             <a href="/{{ test_id }}/{{ page_id }}/links/edit/{{ index }}">Edit</a>
             <a href="/{{ test_id }}/{{ page_id }}/links/delete/{{ index }}">Delete</a>
+        <a href="/{{ test_id }}/pages/edit/{{ link.page.identifier }}">Edit linked page</a>
         </div>
     {% endfor %}
 {% endblock %}
