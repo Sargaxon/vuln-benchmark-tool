@@ -55,18 +55,20 @@ def run_test(test_id):
     if len(settings.tests[test_id]) == 0:
         return redirect("/tests", 302)
 
+    add_pages(settings.tests[test_id])
+
     form = RunController(request.form)
     form.index.choices = RunController.create_pages_drop_down(settings.tests[test_id])
 
     if request.method == "POST" and form.validate():
+        settings = Settings.load()
         form = RunController(request.form)
 
-        add_pages(settings.tests[test_id])
-
+        settings.tool = form.tool.data
         settings.index_page = form.index.data
         settings.save()
 
-        return redirect("localhost:8081/" + form.index.data, 302)
+        return redirect("http://localhost:8081/" + form.index.data, 302)
 
     return render_template("creator/run.html", form=form, test_id=test_id)
 
