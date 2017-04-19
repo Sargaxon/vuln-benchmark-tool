@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
+from collections import OrderedDict
+
 from wtforms import StringField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired
-from os import linesep
+from os import linesep, abort
 
 from includes.creator import Page, Header
-from project import app
+from project import app, PER_PAGE
 from flask import render_template, redirect, request
 from flask_wtf import FlaskForm
-from project.components import Settings
+from project.components import Settings, Pagination
 
 
 class PageController(FlaskForm):
@@ -36,13 +38,22 @@ class PageController(FlaskForm):
         return raw_headers
 
 
-@app.route('/<test_id>/pages')
-def list_pages(test_id):
+@app.route('/<test_id>/pages', defaults={'page': 1})
+@app.route('/<test_id>/pages/<int:page>')
+def list_pages(test_id, page):
     settings = Settings.load()
 
     pages = settings.tests[test_id]
+    pages = OrderedDict(pages)
+    count = len(pages)
+    pages = OrderedDict(list(pages.items())[(page - 1) * PER_PAGE:page * PER_PAGE])
 
-    return render_template('page/list.html', pages=pages, test_id=test_id)
+    if not pages and page != 1:
+        abort(404)
+
+    pagination = Pagination(page, PER_PAGE, count)
+
+    return render_template('page/list.html', pages=pages, test_id=test_id, pagination=pagination)
 
 
 @app.route('/<test_id>/pages/new', methods=['GET', 'POST'])

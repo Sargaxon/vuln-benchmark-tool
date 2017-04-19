@@ -1,5 +1,5 @@
 # # -*- coding: utf-8 -*-
-from flask import Flask
+from flask import Flask, url_for, request
 from flask_debugtoolbar import DebugToolbarExtension
 __version__ = '0.2'
 
@@ -20,6 +20,8 @@ tools = [
     ("burp", "Burp Suite")
 ]
 
+PER_PAGE = 25
+
 toolbar = DebugToolbarExtension(app)
 from project.controllers import *
 from project.models import *
@@ -29,3 +31,10 @@ from project.database.Database import session
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     session.remove()
+
+
+def url_for_other_page(page):
+    args = request.view_args.copy()
+    args['page'] = page
+    return url_for(request.endpoint, **args)
+app.jinja_env.globals['url_for_other_page'] = url_for_other_page

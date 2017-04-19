@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
+from collections import OrderedDict
+
 from wtforms import StringField, IntegerField
 from wtforms.validators import DataRequired
 
-from includes.creator import Page, Param
-from project import app
-from flask import render_template, redirect, request
+from includes.creator import Param
+from project import app, PER_PAGE
+from flask import render_template, redirect, request, abort
 from flask_wtf import FlaskForm
-from project.components import Settings
+from project.components import Settings, Pagination
 
 
 class ParamController(FlaskForm):
@@ -15,13 +17,22 @@ class ParamController(FlaskForm):
     value = IntegerField('value', validators=[DataRequired()])
 
 
-@app.route('/<test_id>/<page_id>/params')
-def list_params(test_id, page_id):
+@app.route('/<test_id>/<page_id>/params', defaults={'page': 1})
+@app.route('/<test_id>/<page_id>/params/<int:page>')
+def list_params(test_id, page_id, page):
     settings = Settings.load()
 
     params = settings.tests[test_id][page_id].params
+    params = OrderedDict(params)
+    count = len(params)
+    params = OrderedDict(list(params.items())[(page-1)*PER_PAGE:page*PER_PAGE])
 
-    return render_template('param/list.html', params=params, test_id=test_id, page_id=page_id)
+    if not params and page != 1:
+        abort(404)
+
+    pagination = Pagination(page, PER_PAGE, count)
+
+    return render_template('param/list.html', params=params, test_id=test_id, page_id=page_id, pagination=pagination)
 
 
 @app.route('/<test_id>/<page_id>/params/new', methods=['GET', 'POST'])

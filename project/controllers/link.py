@@ -3,9 +3,9 @@ from flask_wtf import FlaskForm
 from wtforms import SelectField
 
 from includes.creator import Link
-from project import app
-from flask import render_template, redirect, request
-from project.components import Settings
+from project import app, PER_PAGE
+from flask import render_template, redirect, request, abort
+from project.components import Settings, Pagination
 
 
 class LinkController(FlaskForm):
@@ -22,13 +22,27 @@ class LinkController(FlaskForm):
         return drop_down
 
 
-@app.route('/<test_id>/<page_id>/links')
-def list_links(test_id, page_id):
+@app.route('/<test_id>/<page_id>/links', defaults={'page': 1})
+@app.route('/<test_id>/<page_id>/links/<int:page>')
+def list_links(test_id, page_id, page):
     settings = Settings.load()
 
     links = settings.tests[test_id][page_id].links
+    count = len(links)
+    links = links[(page - 1) * PER_PAGE:page * PER_PAGE]
 
-    return render_template('link/list.html', links=enumerate(links), test_id=test_id, page_id=page_id)
+    if not links and page != 1:
+        abort(404)
+
+    pagination = Pagination(page, PER_PAGE, count)
+
+    return render_template(
+        'link/list.html',
+        links=enumerate(links),
+        test_id=test_id,
+        page_id=page_id,
+        pagination=pagination
+    )
 
 
 @app.route('/<test_id>/<page_id>/links/new', methods=['GET', 'POST'])
