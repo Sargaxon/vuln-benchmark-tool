@@ -98,15 +98,15 @@ def demo():
 
 @app.route('/analysis/<tool>')
 def analysis(tool):
-    width = 1000
-    height = 800
+    width = 1900
+    height = 1200
     Analysis.request_method(tool)
 
     images = []
     for root, dirs, files in os.walk('.'):
         for filename in [os.path.join(root, name) for name in files]:
             # print("FILENAME: " + str(filename))
-            if not filename.endswith('.jpg'):
+            if not (filename.endswith('.jpg') and filename.startswith('./%s' % tool)):
                 continue
             im = Image.open(filename)
             w, h = im.size

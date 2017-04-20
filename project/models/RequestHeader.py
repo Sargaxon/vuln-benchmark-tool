@@ -40,6 +40,7 @@ class RequestHeader(Base):
     upgrade = Column(Text)
     via = Column(Text)
     warning = Column(Text)
+    tool = Column(Text)
 
     def __init__(self,
                  accept=None,
@@ -75,7 +76,8 @@ class RequestHeader(Base):
                  user_agent=None,
                  upgrade=None,
                  via=None,
-                 warning=None):
+                 warning=None,
+                 tool=None):
         self.accept = accept
         self.accept_charset = accept_charset
         self.accept_encoding = accept_encoding
@@ -110,6 +112,7 @@ class RequestHeader(Base):
         self.upgrade = upgrade
         self.via = via
         self.warning = warning
+        self.tool = tool
 
     def insert(self):
         session.add(self)
