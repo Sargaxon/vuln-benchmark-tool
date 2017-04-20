@@ -1,7 +1,8 @@
 from flask import render_template, Markup, flash
+
+from benchmark.controllers import benchmark
 from includes.creator import FormCreator
 from project import app
-from project.components import LoggerControl
 from project.models.RequestHeader import RequestHeader
 from project.models.Request import Request
 
@@ -42,7 +43,7 @@ def print_view(req_id):
 
     rh = RequestHeader.find_one(req_id)
     message = "<p><b>Request Headers:</b>"
-    for field in LoggerControl.request_header_fields:
+    for field in benchmark.request_header_fields:
         if getattr(rh, field.lower(), 0):
             message += "<br><b>{0}:</b> {1}".format(field, getattr(rh, field.lower()))
             # print("<br><b>{0}:</b> {1}".format(field, getattr(rh, field.lower())))
