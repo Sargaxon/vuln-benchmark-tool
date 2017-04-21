@@ -1,21 +1,15 @@
 # -*- coding: utf-8 -*-
-import base64
-import io
 import os
 
-from io import StringIO
-import matplotlib.pyplot as plt
 from wtforms import SelectField
 from wtforms.validators import DataRequired
 
 from includes.creator import FormCreator, LinkCreator, PageCreator, RedirectPage, Header, Page
-from project import app, tools
-from flask import render_template, redirect, request
+from project import tools
 from PIL import Image
 
 from project import app
-from flask import render_template, request, redirect, make_response, render_template_string, send_from_directory, \
-    Response
+from flask import render_template, request, redirect, render_template_string
 from flask_wtf import FlaskForm
 from project.components import Analysis, Settings
 
