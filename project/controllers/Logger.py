@@ -1,15 +1,16 @@
-from flask import render_template, Markup, flash
+from collections import OrderedDict
+
+from flask import render_template, Markup, flash, abort
 
 from benchmark.controllers import benchmark
 from includes.creator import FormCreator
-from project import app
+from project import app, PER_PAGE
+from project.components import Pagination
 from project.models.RequestHeader import RequestHeader
 from project.models.Request import Request
 
 
-def print_log():
-    requests = Request.query.all()
-
+def print_log(requests):
     for r in requests:
         message = Markup("<p><b>Request [{0}]:"
                          "<br>Id:</b> {1}"
@@ -58,12 +59,22 @@ def print_view(req_id):
     flash(message)
 
 
-@app.route('/creator/log')
-def log():
-    form = FormCreator("POST", "log-action")
+@app.route('/creator/log', defaults={'page': 1})
+@app.route('/creator/log/<int:page>')
+def log(page):
+    requests = Request.query.all()
 
-    print_log()
-    return render_template('creator/log.html')
+    count = len(requests)
+    requests = requests[(page - 1) * PER_PAGE:page * PER_PAGE]
+
+    if not requests and page != 1:
+        abort(404)
+
+    pagination = Pagination(page, PER_PAGE, count)
+
+    print_log(requests)
+
+    return render_template('creator/log.html', pagination=pagination)
 
 
 @app.route('/creator/log/view=<int:req_id>')
