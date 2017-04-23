@@ -156,4 +156,4 @@ def analysis(tool):
 
 @app.route('/analysis')
 def select_analysis():
-    return render_template('creator/select_analysis.html')
+    return render_template('creator/select_analysis.html', tools=tools)
