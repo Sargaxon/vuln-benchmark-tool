@@ -1,3 +1,4 @@
+pillow
 pandas
 matplotlib
 mitmproxy
@@ -8,3 +9,4 @@ WTForms
 Jinja2
 Flask-DebugToolbar
 numpy
+psycopg2
