@@ -10,5 +10,5 @@ class ImageController:
 
 @app.route('/images/<file_name>')
 def image(file_name):
-    return send_file('../' + file_name, mimetype="image/jpeg")
+    return send_file('../images/' + file_name, mimetype="image/png")
 

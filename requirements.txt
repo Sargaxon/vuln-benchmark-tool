@@ -2,7 +2,6 @@ seaborn
 pillow
 pandas
 matplotlib
-mitmproxy
 sqlalchemy
 Flask
 Flask-WTF

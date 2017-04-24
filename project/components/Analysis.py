@@ -1,22 +1,12 @@
-import io
 from collections import OrderedDict
-from operator import itemgetter
-import numpy as np
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
-import sqlalchemy.orm as orm
-from matplotlib.font_manager import FontProperties
 from sqlalchemy import and_
-from flask import Markup, flash
 
 from benchmark.controllers.benchmark import request_header_fields
 from project import tools
 from project.models.RequestHeader import RequestHeader
-from project.models.Response import Response
 from project.models.Request import Request
-from sqlalchemy.sql import compiler
-from psycopg2.extensions import adapt as sqlescape
 
 # tool = "zaproxy"
 app = "flask"
@@ -47,7 +37,7 @@ def request_comparison():
                                           list(data.values())[i]))
     plt.subplots_adjust(right=0.8)
     plt.title("Total number of tests ratio")
-    plt.savefig('allPie_RequestsRatio.jpg', bbox_inches='tight')
+    plt.savefig('images/allPie_RequestsRatio.png', bbox_inches='tight')
     plt.clf()
 
     # BAR COMPARISON CHART
@@ -58,7 +48,7 @@ def request_comparison():
         ax.annotate(str(p.get_height()), xy=(p.get_x(), p.get_height()), fontsize=15)
     ax.set_xlabel("Tool name", fontsize=15)
     ax.set_ylabel("Number of executed tests", fontsize=15)
-    plt.savefig('allBar_RequestsCount.jpg', bbox_inches='tight')
+    plt.savefig('images/allBar_RequestsCount.png', bbox_inches='tight')
     plt.clf()
 
     # REQUEST FIELDS - ALL TOOLS COMPARISON:
@@ -91,7 +81,7 @@ def request_comparison():
 
         plt.subplots_adjust(right=0.8)
         plt.title("Tested requests %s ratio" % field)
-        plt.savefig('all_%s.jpg' % field, bbox_inches='tight')
+        plt.savefig('images/all_%s.png' % field, bbox_inches='tight')
         plt.clf()
 
     # REQUEST HEADER FIELDS - ALL TOOLS COMPARISON:
@@ -125,7 +115,7 @@ def request_comparison():
                                               list(data.values())[j]))
         plt.subplots_adjust(right=0.8)
         plt.title("Tested Requests Headers accept ratio")
-        plt.savefig('allPie_{0}.jpg'.format(field), bbox_inches='tight')
+        plt.savefig('images/allPie_{0}.png'.format(field), bbox_inches='tight')
         plt.clf()
 
 
@@ -166,7 +156,7 @@ def request_method(tool):
                                               list(data.values())[j]))
         plt.subplots_adjust(right=0.8)
         plt.title("%s - %s" % (tool, app))
-        plt.savefig('{0}_{1}.jpg'.format(tool, field), bbox_inches='tight')
+        plt.savefig('images/{0}_{1}.png'.format(tool, field), bbox_inches='tight')
         plt.clf()
 
     # REQUEST HEADERS
@@ -200,5 +190,5 @@ def request_method(tool):
                                               list(data.values())[j]))
         plt.subplots_adjust(right=0.8)
         plt.title("%s - %s" % (tool, app))
-        plt.savefig('{0}{1}_{2}.jpg'.format(tool, i, field), bbox_inches='tight')
+        plt.savefig('images/{0}{1}_{2}.png'.format(tool, i, field), bbox_inches='tight')
         plt.clf()

@@ -135,7 +135,7 @@ def analysis(tool):
     for root, dirs, files in os.walk('.'):
         for filename in [os.path.join(root, name) for name in files]:
             # print("FILENAME: " + str(filename))
-            if not (filename.endswith('.jpg') and filename.startswith('./%s' % tool)):
+            if not (filename.endswith('.png') and filename.startswith('./images/%s' % tool)):
                 continue
             im = Image.open(filename)
             w, h = im.size
