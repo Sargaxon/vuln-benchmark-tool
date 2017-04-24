@@ -54,6 +54,8 @@ def add_page(page):
 @app.route('/creator/run/<test_id>', methods=['GET', 'POST'])
 def run_test(test_id):
     settings = Settings.load()
+    settings.session = dict()
+    settings.save()
 
     if len(settings.tests[test_id]) == 0:
         return redirect("/tests", 302)
