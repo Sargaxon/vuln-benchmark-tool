@@ -18,6 +18,7 @@ tools = [
     ("unknown", "Unknown"),
     ("zaproxy", "OWASP ZAP"),
     ("w3af", "W3af"),
+    ("netsparker", "Netsparker"),
     ("burp", "Burp Suite")
 ]
 
