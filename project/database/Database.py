@@ -82,6 +82,7 @@ def db_create():
                'upgrade text, '
                'via text, '
                'warning text, '
+               'tool text'
                'foreign key (id_request) references requests(id))')
     db.execute('CREATE TABLE IF NOT EXISTS responses_headers(id_response serial, '
                'access_control_allow_origin text, '

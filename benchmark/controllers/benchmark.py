@@ -70,7 +70,7 @@ def log_request_info():
         "method": request.method,
         "scheme": "null",
         "host": 'localhost',
-        "port": '8080',
+        "port": '8081',
         "path": request.path,
         "http_version": "HTTP/1.1",
         "headers": "null",
@@ -91,6 +91,7 @@ def log_request_info():
 
         request_header_data[request_header_fields[i].lower().replace("-", "_")] = \
             str(request.headers[request_header_fields[i]])
+        request_header_data['tool'] = tool_name
 
     header = RequestHeader(**request_header_data)
     header.id_request = req.id

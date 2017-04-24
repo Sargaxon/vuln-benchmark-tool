@@ -130,8 +130,8 @@ def demo():
 
 @app.route('/analysis/<tool>')
 def analysis(tool):
-    width = 1900
-    height = 1200
+    width = 1000
+    height = 800
     Analysis.request_method(tool)
 
     images = []

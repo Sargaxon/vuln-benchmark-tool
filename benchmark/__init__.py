@@ -10,9 +10,9 @@ app.config.update(dict(
     USERNAME='admin',
     PASSWORD='default'
 ))
-app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+app.config.from_envvar('FLASK_SETTINGS', silent=True)
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.debug = True
+app.debug = False
 
 toolbar = DebugToolbarExtension(app)
 from benchmark.controllers import benchmark
