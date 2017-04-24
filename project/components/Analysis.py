@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import and_
 
-from benchmark.controllers.benchmark import request_header_fields
 from project import tools
 from project.models.RequestHeader import RequestHeader
 from project.models.Request import Request
@@ -15,6 +14,14 @@ skip_header_fields = ['accept_encoding', 'accept_datetime', 'h_authorization', '
                       'forwarded', 'h_from', 'if_match', 'if_modified_since', 'if_none_match', 'if_range',
                       'if_unmodified_since', 'max_forwards', 'origin', 'proxy_authorization', 'proxy_connection',
                       'range', 'referer', 'te', 'upgrade', 'via', 'warning']
+
+request_header_fields = [
+    'Accept', 'Accept-Charset', 'Accept-Encoding', 'Accept-Language', 'Accept-Datetime',
+    'Connection', 'H-Authorization', 'Cache-Control', 'Cookie', 'Content-Length',
+    'Content-MD5', 'Content-Type', 'Date', 'Expect', 'Forwarded', 'H-From', 'Host',
+    'If-Match', 'If-Modified-Since', 'If-None-Match', 'If-Range', 'If-Unmodified-Since',
+    'Max-Forwards', 'Origin', 'Pragma', 'Proxy-Authorization', 'Proxy-Connection', 'Range',
+    'Referer', 'TE', 'User-Agent', 'Upgrade', 'Via', 'Warning']
 
 
 def request_comparison():

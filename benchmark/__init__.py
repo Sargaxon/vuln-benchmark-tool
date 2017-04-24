@@ -14,7 +14,7 @@ app.config.from_envvar('FLASK_SETTINGS', silent=True)
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.debug = False
 
-PORT = 8081
+PORT = 6061
 
 toolbar = DebugToolbarExtension(app)
 from benchmark.controllers import benchmark
