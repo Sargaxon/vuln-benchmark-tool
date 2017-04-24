@@ -12,6 +12,7 @@ from project import app
 from flask import render_template, request, redirect, render_template_string
 from flask_wtf import FlaskForm
 from project.components import Analysis, Settings
+from benchmark import PORT
 
 
 class CreatorController(FlaskForm):
@@ -70,7 +71,7 @@ def run_test(test_id):
         settings.index_page = form.index.data
         settings.save()
 
-        return redirect("http://localhost:8081/" + form.index.data, 302)
+        return redirect("http://localhost:" + str(PORT) + "/" + form.index.data, 302)
 
     return render_template("creator/run.html", form=form, test_id=test_id)
 
@@ -117,7 +118,7 @@ def demo():
         settings.index_page = "demo"
         settings.save()
 
-        return redirect("http://localhost:8081/" + form.index.data, 302)
+        return redirect("http://localhost:" + str(PORT) + "/" + form.index.data, 302)
 
     return render_template('creator/demo.html', index="demo", form=form)
 
