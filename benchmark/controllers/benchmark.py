@@ -54,8 +54,8 @@ app_name = "vuln-benchmark-tool"
 
 request_header_fields = [
     'Accept', 'Accept-Charset', 'Accept-Encoding', 'Accept-Language', 'Accept-Datetime',
-    'Connection', 'Authorization', 'Cache-Control', 'Cookie', 'Content-Length',
-    'Content-MD5', 'Content-Type', 'Date', 'Expect', 'Forwarded', 'From', 'Host',
+    'Connection', 'H-Authorization', 'Cache-Control', 'Cookie', 'Content-Length',
+    'Content-MD5', 'Content-Type', 'Date', 'Expect', 'Forwarded', 'H-From', 'Host',
     'If-Match', 'If-Modified-Since', 'If-None-Match', 'If-Range', 'If-Unmodified-Since',
     'Max-Forwards', 'Origin', 'Pragma', 'Proxy-Authorization', 'Proxy-Connection', 'Range',
     'Referer', 'TE', 'User-Agent', 'Upgrade', 'Via', 'Warning']

@@ -126,7 +126,10 @@ def demo():
 def analysis(tool):
     width = 1000
     height = 800
-    Analysis.request_method(tool)
+    if tool != 'all':
+        Analysis.request_method(tool)
+    else:
+        Analysis.request_comparison()
 
     images = []
     for root, dirs, files in os.walk('.'):
