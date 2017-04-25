@@ -203,7 +203,7 @@ def request_comparison():
 
 def scatterplot():
     all_data = list()
-    for i in range(0, 3):  # len(request_header_fields)):
+    for i in range(0, len(request_header_fields)):
         plt.figure(i)
         data_list = list()
         field = request_header_fields[i].lower().replace("-", "_")
