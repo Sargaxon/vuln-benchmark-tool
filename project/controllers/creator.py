@@ -129,13 +129,15 @@ def demo():
 def analysis(tool):
     width = 1000
     height = 800
-    if tool != 'all':
-        Analysis.request_method(tool)
-    else:
+    if tool == 'all':
         Analysis.request_comparison()
+    elif tool == 'sctr':
+        Analysis.scatterplot()
+    else:
+        Analysis.request_method(tool)
 
     images = []
-    for root, dirs, files in os.walk('.'):
+    for root, dirs, files in os.walk('./images'):
         for filename in [os.path.join(root, name) for name in files]:
             # print("FILENAME: " + str(filename))
             if not (filename.endswith('.png') and filename.startswith('./images/%s' % tool)):

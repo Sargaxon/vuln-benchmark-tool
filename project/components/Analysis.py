@@ -1,19 +1,21 @@
+import csv
 from collections import OrderedDict
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 from sqlalchemy import and_
 
 from project import tools
+from project.components import Settings
 from project.models.RequestHeader import RequestHeader
 from project.models.Request import Request
 
 # tool = "zaproxy"
 app = "flask"
 request_fields = ['method', 'content']
-skip_header_fields = ['accept_encoding', 'accept_datetime', 'h_authorization', 'content_md5', 'date', 'expect',
-                      'forwarded', 'h_from', 'if_match', 'if_modified_since', 'if_none_match', 'if_range',
-                      'if_unmodified_since', 'max_forwards', 'origin', 'proxy_authorization', 'proxy_connection',
-                      'range', 'referer', 'te', 'upgrade', 'via', 'warning']
+skip_header_fields = ['accept_datetime', 'h_authorization', 'content_md5', 'date', 'expect',
+                      'forwarded', 'h_from', 'if_match', 'if_unmodified_since', 'if_range', 'max_forwards', 'origin',
+                      'proxy_authorization', 'proxy_connection', 'referer', 'te', 'upgrade', 'via', 'warning']
 
 request_header_fields = [
     'Accept', 'Accept-Charset', 'Accept-Encoding', 'Accept-Language', 'Accept-Datetime',
@@ -22,6 +24,80 @@ request_header_fields = [
     'If-Match', 'If-Modified-Since', 'If-None-Match', 'If-Range', 'If-Unmodified-Since',
     'Max-Forwards', 'Origin', 'Pragma', 'Proxy-Authorization', 'Proxy-Connection', 'Range',
     'Referer', 'TE', 'User-Agent', 'Upgrade', 'Via', 'Warning']
+
+
+def request_method(tool):
+    # req_sum = Request.query.filter(Request.tool == tool).count()
+    # message = Markup("<p><b>General</b><br>"
+    #                  "Requests sum: {0}<br>"
+    #                  "Requests per second: {1}</p>".format(req_sum, 0))  # to do
+    # flash(message)
+
+    # REQUESTS
+    for i in range(0, len(request_fields)):
+        field = request_fields[i].lower()
+        plt.figure(i)
+        data = {}
+        query = Request.query.filter(Request.tool == tool).distinct(field)
+        for r in query:
+            parse = str(getattr(r, field) or 'null')
+            parse = parse.replace('"', "").strip()
+            query_count = Request.query.filter(and_(getattr(Request, field) == getattr(r, field)),
+                                               (Request.tool == tool)).count()
+            if parse in data:
+                data[parse] += query_count
+            else:
+                data[parse] = query_count
+
+        data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
+
+        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name="Tool: %s" % tool)
+        series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
+                        fontsize=8, figsize=(6, 6), legend=True)
+        L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
+        for j in range(0, len(data.items())):
+            L.get_texts()[j].set_text("{0} ({1}%)[{2}]"
+                                      .format(list(data.keys())[j][:15],
+                                              round(100 * float(list(data.values())[j]) / sum(data.values()), 2),
+                                              list(data.values())[j]))
+        plt.subplots_adjust(right=0.8)
+        plt.title("Requests (%s) ratio" % field)
+        plt.savefig('images/{0}_{1}.png'.format(tool, field), bbox_inches='tight')
+        plt.clf()
+
+    # REQUEST HEADERS
+    for i in range(0, len(request_header_fields)):
+        field = request_header_fields[i].lower().replace("-", "_")
+        if field in skip_header_fields:
+            continue
+        plt.figure(i)
+        data = {}
+        query = RequestHeader.query.filter(RequestHeader.tool == tool).distinct(field)
+        for r in query:
+            parse = str(getattr(r, field) or 'null')
+            query_count = RequestHeader.query.filter(and_(getattr(RequestHeader, field) == getattr(r, field)),
+                                                     (RequestHeader.tool == tool)).count()
+            if parse in data:
+                data[parse] += query_count
+            else:
+                data[parse] = query_count
+
+        data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
+
+        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(),
+                           name="Tool: %s" % tool)
+        series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
+                        fontsize=8, figsize=(6, 6), legend=True)
+        L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
+        for j in range(0, len(data.items())):
+            L.get_texts()[j].set_text("{0} ({1}%)[{2}]"
+                                      .format(list(data.keys())[j][:15],
+                                              round(100 * float(list(data.values())[j]) / sum(data.values()), 2),
+                                              list(data.values())[j]))
+        plt.subplots_adjust(right=0.8)
+        plt.title("Requests header (%s) ratio" % field)
+        plt.savefig('images/{0}{1}_{2}.png'.format(tool, i, field), bbox_inches='tight')
+        plt.clf()
 
 
 def request_comparison():
@@ -75,8 +151,7 @@ def request_comparison():
 
             data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
 
-        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(),
-                           name="Request type (%s)" % field)
+        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys())
         series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
                         fontsize=8, figsize=(6, 6), legend=True)
         L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
@@ -87,7 +162,7 @@ def request_comparison():
                                               list(data.values())[j]))
 
         plt.subplots_adjust(right=0.8)
-        plt.title("Tested requests %s ratio" % field)
+        plt.title("Requests (%s) ratio" % field)
         plt.savefig('images/all_%s.png' % field, bbox_inches='tight')
         plt.clf()
 
@@ -105,13 +180,13 @@ def request_comparison():
                 if getattr(r, field) is None:
                     continue
                 else:
-                    data[tools[k][0]] += RequestHeader.query.filter(and_(getattr(RequestHeader, field) == getattr(r, field)),
-                                                                        (RequestHeader.tool == tools[k][0])).count()
+                    data[tools[k][0]] += RequestHeader.query.filter(
+                        and_(getattr(RequestHeader, field) == getattr(r, field)),
+                        (RequestHeader.tool == tools[k][0])).count()
 
         data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
 
-        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(),
-                           name="RequestHeader type (%s)" % field)
+        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys())
         series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
                         fontsize=8, figsize=(6, 6), legend=True)
         L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
@@ -121,81 +196,66 @@ def request_comparison():
                                               round(100 * float(list(data.values())[j]) / sum(data.values()), 2),
                                               list(data.values())[j]))
         plt.subplots_adjust(right=0.8)
-        plt.title("Tested Requests Headers accept ratio")
+        plt.title("Request header (%s) ratio" % field)
         plt.savefig('images/allPie_{0}.png'.format(field), bbox_inches='tight')
         plt.clf()
 
 
-def request_method(tool):
-    i = 0
-    # req_sum = Request.query.filter(Request.tool == tool).count()
-    # message = Markup("<p><b>General</b><br>"
-    #                  "Requests sum: {0}<br>"
-    #                  "Requests per second: {1}</p>".format(req_sum, 0))  # to do
-    # flash(message)
-
-    # REQUESTS
-    for i in range(0, len(request_fields)):
-        field = request_fields[i].lower()
+def scatterplot():
+    all_data = list()
+    for i in range(0, 3):  # len(request_header_fields)):
         plt.figure(i)
-        data = {}
-        query = Request.query.filter(Request.tool == tool).distinct(field)
-        for r in query:
-            parse = str(getattr(r, field) or 'null')
-            parse = parse.replace('"', "").strip()
-            query_count = Request.query.filter(and_(getattr(Request, field) == getattr(r, field)),
-                                               (Request.tool == tool)).count()
-            if parse in data:
-                data[parse] += query_count
-            else:
-                data[parse] = query_count
-
-        data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
-
-        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name="Request type (method)")
-        series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
-                        fontsize=8, figsize=(6, 6), legend=True)
-        L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
-        for j in range(0, len(data.items())):
-            L.get_texts()[j].set_text("{0} ({1}%)[{2}]"
-                                      .format(list(data.keys())[j][:15],
-                                              round(100 * float(list(data.values())[j]) / sum(data.values()), 2),
-                                              list(data.values())[j]))
-        plt.subplots_adjust(right=0.8)
-        plt.title("%s - %s" % (tool, app))
-        plt.savefig('images/{0}_{1}.png'.format(tool, field), bbox_inches='tight')
-        plt.clf()
-
-    # REQUEST HEADERS
-    for i in range(0, len(request_header_fields)):
+        data_list = list()
         field = request_header_fields[i].lower().replace("-", "_")
+
         if field in skip_header_fields:
             continue
-        plt.figure(i)
-        data = {}
-        query = RequestHeader.query.filter(RequestHeader.tool == tool).distinct(field)
-        for r in query:
-            parse = str(getattr(r, field) or 'null')
-            query_count = RequestHeader.query.filter(and_(getattr(RequestHeader, field) == getattr(r, field)),
-                                                     (RequestHeader.tool == tool)).count()
-            if parse in data:
-                data[parse] += query_count
-            else:
-                data[parse] = query_count
 
-        data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
+        for k in range(1, len(tools)):
+            # data[tools[k][0]] = 0
+            x, y = 0, 0
+            query = RequestHeader.query.filter(RequestHeader.tool == tools[k][0]).distinct(field)
+            for r in query:
+                parse = str(getattr(r, field) or 'null')
+                query_count = RequestHeader.query.filter(and_(getattr(RequestHeader, field) == getattr(r, field)),
+                                                         (RequestHeader.tool == tools[k][0])).count()
+                if parse != 'null':
+                    y += query_count
+                else:
+                    x += query_count
 
-        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(),
-                           name="RequestHeader (%s)" % field)
-        series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
-                        fontsize=8, figsize=(6, 6), legend=True)
-        L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
-        for j in range(0, len(data.items())):
-            L.get_texts()[j].set_text("{0} ({1}%)[{2}]"
-                                      .format(list(data.keys())[j][:15],
-                                              round(100 * float(list(data.values())[j]) / sum(data.values()), 2),
-                                              list(data.values())[j]))
-        plt.subplots_adjust(right=0.8)
-        plt.title("%s - %s" % (tool, app))
-        plt.savefig('images/{0}{1}_{2}.png'.format(tool, i, field), bbox_inches='tight')
+            data = dict()
+            data["Tool"] = tools[k][0]
+            data["Header_field"] = field
+            data["null"] = x
+            data["full"] = y
+            data_list.append(data)
+            all_data.append(data)
+
+        # METHODS SCATTER CHART
+        df = pd.DataFrame(data=data_list, index=list(range(0, len(data_list))), columns=["Tool", "Header_field", "null", "full"])
+
+        sns.set(style="ticks")
+        sns.lmplot(x="null", y="full", data=df, col='Header_field', hue='Tool', legend=False, fit_reg=False)
+        plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=df.Tool)
+        plt.savefig('images/sctr{0}_{1}.png'.format(i, field), bbox_inches='tight')
         plt.clf()
+
+    for k in range(1, len(tools)):
+        data_list = []
+        for l in range(0, len(all_data)):
+            if all_data[l]['Tool'] == tools[k][0]:
+                data_list.append(all_data[l])
+
+        # TOOLS SCATTER PLOT
+        df = pd.DataFrame(data=data_list, index=list(range(0, len(data_list))), columns=["Tool", "Header_field", "null", "full"])
+
+        sns.set(style="ticks")
+        sns.lmplot(x="null", y="full", data=df, col='Tool', hue='Header_field', legend=False, fit_reg=False,
+                   col_wrap=1)
+        plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=df.Header_field)
+
+        plt.savefig('images/sctr{0}_{1}.png'.format(k, tools[k][0]), bbox_inches='tight')
+        plt.clf()
+
+scatterplot()

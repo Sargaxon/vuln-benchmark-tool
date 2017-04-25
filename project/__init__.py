@@ -18,8 +18,10 @@ tools = [
     ("unknown", "Unknown"),
     ("zaproxy", "OWASP ZAP"),
     ("w3af", "W3af"),
-    ("netsparker", "Netsparker"),
-    ("burp", "Burp Suite")
+    ("tool_n", "Tool N"),
+    ("skipfish", "Skipfish"),
+    ("arachi", "Arachi Scanner"),
+    ("tool_b", "Tool B")
 ]
 
 PER_PAGE = 25
