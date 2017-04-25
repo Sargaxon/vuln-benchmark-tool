@@ -13,6 +13,7 @@ from project.models.Request import Request
 # tool = "zaproxy"
 app = "flask"
 request_fields = ['method', 'content']
+
 skip_header_fields = ['accept_datetime', 'h_authorization', 'content_md5', 'date', 'expect',
                       'forwarded', 'h_from', 'if_match', 'if_unmodified_since', 'if_range', 'max_forwards', 'origin',
                       'proxy_authorization', 'proxy_connection', 'referer', 'te', 'upgrade', 'via', 'warning']
@@ -50,6 +51,7 @@ def request_method(tool):
                 data[parse] = query_count
 
         data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
+        dict(data)
 
         series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name="Tool: %s" % tool)
         series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
@@ -83,6 +85,7 @@ def request_method(tool):
                 data[parse] = query_count
 
         data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
+        dict(data)
 
         series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(),
                            name="Tool: %s" % tool)
@@ -108,6 +111,7 @@ def request_comparison():
         data[tools[i][1]] = Request.query.filter(Request.tool == tools[i][0]).count()
 
     data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True))
+    data = dict(data)
 
     series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name="")
     series.plot.pie(subplots=True, labels=None, labeldistance=.5,
@@ -150,6 +154,7 @@ def request_comparison():
                                                               (Request.tool == tools[k][0])).count()
 
             data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
+            data = dict(data)
 
         series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys())
         series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
@@ -185,6 +190,7 @@ def request_comparison():
                         (RequestHeader.tool == tools[k][0])).count()
 
         data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
+        data = dict(data)
 
         series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys())
         series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
@@ -204,7 +210,7 @@ def request_comparison():
 def scatterplot():
     all_data = list()
     for i in range(0, len(request_header_fields)):
-        plt.figure(i)
+        plt.figure(1)
         data_list = list()
         field = request_header_fields[i].lower().replace("-", "_")
 
@@ -233,29 +239,39 @@ def scatterplot():
             all_data.append(data)
 
         # METHODS SCATTER CHART
-        df = pd.DataFrame(data=data_list, index=list(range(0, len(data_list))), columns=["Tool", "Header_field", "null", "full"])
+        df = pd.DataFrame(data=data_list, index=list(range(0, len(data_list))),
+                          columns=["Tool", "Header_field", "null", "full"])
 
         sns.set(style="ticks")
         sns.lmplot(x="null", y="full", data=df, col='Header_field', hue='Tool', legend=False, fit_reg=False)
-        plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=df.Tool)
+        L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=df.Tool)
+        for j in range(0, len(data_list)):
+            L.get_texts()[j].set_text("{0} ({1}, {2})".format(data_list[j]['Tool'][:15],
+                                                              data_list[j]['null'],
+                                                              data_list[j]['full']))
         plt.savefig('images/sctr{0}_{1}.png'.format(i, field), bbox_inches='tight')
         plt.clf()
 
     for k in range(1, len(tools)):
+        plt.figure(2)
         data_list = []
         for l in range(0, len(all_data)):
             if all_data[l]['Tool'] == tools[k][0]:
                 data_list.append(all_data[l])
 
         # TOOLS SCATTER PLOT
-        df = pd.DataFrame(data=data_list, index=list(range(0, len(data_list))), columns=["Tool", "Header_field", "null", "full"])
+        df = pd.DataFrame(data=data_list, index=list(range(0, len(data_list))),
+                          columns=["Tool", "Header_field", "null", "full"])
 
         sns.set(style="ticks")
         sns.lmplot(x="null", y="full", data=df, col='Tool', hue='Header_field', legend=False, fit_reg=False,
                    col_wrap=1)
-        plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=df.Header_field)
-
+        L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=df.Header_field)
+        for j in range(0, len(data_list)):
+            L.get_texts()[j].set_text("{0} ({1}, {2})".format(data_list[j]['Header_field'][:15],
+                                                              data_list[j]['null'],
+                                                              data_list[j]['full']))
         plt.savefig('images/sctr{0}_{1}.png'.format(k, tools[k][0]), bbox_inches='tight')
         plt.clf()
 
-scatterplot()
+# scatterplot()
