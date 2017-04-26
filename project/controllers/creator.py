@@ -133,6 +133,8 @@ def analysis(tool):
         Analysis.request_comparison()
     elif tool == 'sctr':
         Analysis.scatterplot()
+    elif tool == 'testcases':
+        Analysis.test_case_comparison()
     else:
         Analysis.request_method(tool)
 

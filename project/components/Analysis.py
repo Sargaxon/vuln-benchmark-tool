@@ -274,4 +274,85 @@ def scatterplot():
         plt.savefig('images/sctr{0}_{1}.png'.format(k, tools[k][0]), bbox_inches='tight')
         plt.clf()
 
-# scatterplot()
+
+def test_case_comparison():
+    settings = Settings.load()
+    identifiers = ['params', 'page-10-params', 'page-50-params', 'page-100-params', 'page-500-params',
+                    'page-1000-params', 'page-5000-params', 'page-10000-params', 'form-get', 'form-post', 'randoms']
+
+    for identif in identifiers:
+        data = {}
+        for k in range(1, len(tools)):
+            data[tools[k][0]] = 0
+            page = settings.tests["misc"][identif]
+            # print(page.identifier)
+
+            data[tools[k][0]] += Request.query.filter(and_(Request.tool == tools[k][0]),
+                                                      (Request.path.like('/{0}%'.format(page.identifier)))).count()
+
+        data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
+        data = dict(data)
+
+        plt.figure(1)
+        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name=None)
+        series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
+                        fontsize=8, figsize=(6, 6), legend=True)
+        L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
+        for j in range(0, len(data.items())):
+            L.get_texts()[j].set_text("{0} ({1}%)[{2}]"
+                                      .format(list(data.keys())[j][:15],
+                                              round(100 * float(list(data.values())[j]) / sum(data.values()), 2),
+                                              list(data.values())[j]))
+        plt.subplots_adjust(right=0.8)
+        plt.title("Test Case Comparison ({0})".format(page.identifier))
+        plt.savefig("images/testcases_{0}.png".format(page.identifier), bbox_inches='tight')
+        plt.clf()
+
+        plt.figure(2)
+        df = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys())
+        ax = df.plot(kind='bar', title="Sum of executed requests comparison", figsize=(15, 10), fontsize=12)
+        for p in ax.patches:
+            ax.annotate(str(p.get_height()), xy=(p.get_x(), p.get_height()), fontsize=15)
+        ax.set_xlabel("Tool name", fontsize=15)
+        ax.set_ylabel("Test case ({0}) sum comparison".format(page.identifier), fontsize=15)
+        plt.savefig("images/testcasesBar_{0}.png".format(page.identifier), bbox_inches='tight')
+        plt.clf()
+
+
+        #random links
+        data = {}
+        for link in settings.tests["misc"]["randoms"].links:
+            for k in range(1, len(tools)):
+                data[tools[k][0]] = 0
+                page = link.page
+
+                data[tools[k][0]] += Request.query.filter(and_(Request.tool == tools[k][0]),
+                                                          (Request.path.like('/{0}%'.format(page.identifier)))).count()
+
+        data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
+        data = dict(data)
+
+        plt.figure(3)
+        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name=None)
+        series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
+                        fontsize=8, figsize=(6, 6), legend=True)
+        L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
+        for j in range(0, len(data.items())):
+            L.get_texts()[j].set_text("{0} ({1}%)[{2}]"
+                                      .format(list(data.keys())[j][:15],
+                                              round(100 * float(list(data.values())[j]) / sum(data.values()), 2),
+                                              list(data.values())[j]))
+        plt.subplots_adjust(right=0.8)
+        plt.title("Test Case Comparison ({0})".format(page.identifier))
+        plt.savefig("images/testcasesPieSumRandom.png", bbox_inches='tight')
+        plt.clf()
+
+        plt.figure(4)
+        df = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys())
+        ax = df.plot(kind='bar', title="Sum of executed requests comparison", figsize=(15, 10), fontsize=12)
+        for p in ax.patches:
+            ax.annotate(str(p.get_height()), xy=(p.get_x(), p.get_height()), fontsize=15)
+        ax.set_xlabel("Tool name", fontsize=15)
+        ax.set_ylabel("Test case (miscellaneous) sum comparison", fontsize=15)
+        plt.savefig("images/testcasesBarSumRandom.png", bbox_inches='tight')
+        plt.clf()

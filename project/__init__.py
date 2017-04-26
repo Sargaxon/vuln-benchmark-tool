@@ -20,7 +20,7 @@ tools = [
     ("w3af", "W3af"),
     ("tool_n", "Tool N"),
     ("skipfish", "Skipfish"),
-    ("arachi", "Arachi Scanner"),
+    ("arachni", "Arachni Scanner"),
     ("tool_b", "Tool B")
 ]
 
