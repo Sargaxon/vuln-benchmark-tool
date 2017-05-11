@@ -1,20 +1,23 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>Pages <a href="/tests">[Back to tests]</a></h2>
+    <h4>Pages</h4>
+    <a class="secondary-content" href="/tests">[Back to tests]</a>
 
-    <a href="/{{ test_id }}/pages/new">New page</a>
-    <hr />
+    <a class="waves-effect waves-light btn" href="/{{ test_id }}/pages/new">New page</a>
 
-    {% for (identifier, page) in pages.items() %}
-        <div>
-            {{ identifier }}
-            <a href="/{{ test_id }}/pages/edit/{{ identifier }}">Edit</a>
-            <a href="/{{ test_id }}/pages/delete/{{ identifier }}">Delete</a>
-            <a href="/{{ test_id }}/{{ identifier }}/params">Add params</a>
-            <a href="/{{ test_id }}/{{ identifier }}/links">Add links</a>
-            <a href="/{{ test_id }}/{{ identifier }}/form">Edit form</a>
-            <a href="/{{ test_id }}/{{ identifier }}/generator">Generator</a>
-        </div>
-    {% endfor %}
+    <ul class="collection">
+        {% for (identifier, page) in pages.items() %}
+            <li class="collection-item">
+                {{ identifier }}
+                <a class="secondary-content" href="/{{ test_id }}/pages/delete/{{ identifier }}"><i class="small material-icons">delete</i></a>
+                <a class="secondary-content" href="/{{ test_id }}/pages/edit/{{ identifier }}"><i class="small material-icons">edit</i></a>
+                <a href="/{{ test_id }}/{{ identifier }}/params">Add params</a>
+                <a href="/{{ test_id }}/{{ identifier }}/links">Add links</a>
+                <a href="/{{ test_id }}/{{ identifier }}/form">Edit form</a>
+                <a href="/{{ test_id }}/{{ identifier }}/generator">Generator</a>
+            </li>
+        {% endfor %}
+    </ul>
+
     {% include "layout/pagination.html" %}
 {% endblock %}

@@ -1,3 +1,15 @@
 {% extends "layout/layout.html" %}
 {% block body %}
+    <h4>Vuln benchmark tool</h4>
+    <h5>Developed by</h5>
+    <div class="chip">
+        <img src="{{ url_for('static', filename='images/javert.jpg') }}" alt="Author" />
+        Ante Barić @capJavert
+    </div>
+    <div class="chip">
+        <img src="{{ url_for('static', filename='images/value.jpg') }}" alt="Author" />
+        Valentin Magdić @Sargaxon
+    </div>
+    <br /> <br />
+    <a href="https://raw.githubusercontent.com/capJavert/vuln-benchmark-tool/master/README.md">README</a>
 {% endblock %}

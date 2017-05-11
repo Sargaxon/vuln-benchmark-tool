@@ -1,23 +1,31 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>Form <a href="/{{ test_id }}/pages">[Back to pages]</a></h2>
+    <h4>Form</h4>
+    <a class="secondary-content" href="/{{ test_id }}/pages">[Back to pages]</a>
 
-    Method: {{ form_creator.method }}<br />
-    Action: {{ form_creator.action }}<br />
-    <a href="/{{ test_id }}/{{ page_id }}/form/fields/new">New field</a>
-    <a href="/{{ test_id }}/{{ page_id }}/form/new">Reset form</a>
-    <hr />
+    <div class="chip">
+        Method: {{ form_creator.method }}
+    </div>
+    <div class="chip">
+        Action: {{ form_creator.action }}
+    </div>
+   <br /><br />
+    <a class="waves-effect waves-light btn" href="/{{ test_id }}/{{ page_id }}/form/fields/new">New field</a>
+    <a class="waves-effect waves-light btn" href="/{{ test_id }}/{{ page_id }}/form/new">Reset form</a>
 
     {% if form_creator %}
-        {% for identifier, element in form_creator.elements.items() %}
-            <div class="form-group">
-                {{ identifier }}
-                {{ element.element_type }}
-                {% if element.element_type == "SelectField" %}
-                    <a href="/{{ test_id }}/{{ page_id }}/form/fields/{{ identifier }}/choices">Choices</a>
-                {% endif %}
-                <a href="/{{ test_id }}/{{ page_id }}/form/fields/delete/{{ identifier }}">Delete</a>
-            </div>
-        {% endfor %}
+         <ul class="collection">
+            {% for identifier, element in form_creator.elements.items() %}
+                <li class="collection-item">
+                    {{ identifier }}
+                    {{ element.element_type }}
+                    {% if element.element_type == "SelectField" %}
+                        <a href="/{{ test_id }}/{{ page_id }}/form/fields/{{ identifier }}/choices">Choices</a>
+                    {% endif %}
+                    <a class="secondary-content" href="/{{ test_id }}/{{ page_id }}/form/fields/delete/{{ identifier }}"><i class="small material-icons">delete</i></a>
+                </li>
+            {% endfor %}
+        </ul>
     {% endif %}
+
 {% endblock %}

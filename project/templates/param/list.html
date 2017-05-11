@@ -1,16 +1,19 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>Params <a href="/{{ test_id }}/pages">[Back to pages]</a></h2>
+    <h4>Params</h4>
+    <a class="secondary-content" href="/{{ test_id }}/pages">[Back to pages]</a>
 
-    <a href="/{{ test_id }}/{{ page_id }}/params/new">New param</a>
-    <hr />
+    <a class="waves-effect waves-light btn" href="/{{ test_id }}/{{ page_id }}/params/new">New param</a>
 
-    {% for (identifier, param) in params.items() %}
-        <div>
-            {{ identifier }}
-            <a href="/{{ test_id }}/{{ page_id }}/params/edit/{{ param.name }}">Edit</a>
-            <a href="/{{ test_id }}/{{ page_id }}/params/delete/{{ param.name }}">Delete</a>
-        </div>
-    {% endfor %}
+    <ul class="collection">
+        {% for (identifier, param) in params.items() %}
+            <li class="collection-item">
+                {{ identifier }}
+                <a class="secondary-content" href="/{{ test_id }}/{{ page_id }}/params/delete/{{ param.name }}"><i class="small material-icons">delete</i></a>
+                <a class="secondary-content" href="/{{ test_id }}/{{ page_id }}/params/edit/{{ param.name }}"><i class="small material-icons">edit</i></a>
+            </li>
+        {% endfor %}
+    </ul>
+
     {% include "layout/pagination.html" %}
 {% endblock %}

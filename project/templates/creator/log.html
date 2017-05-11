@@ -1,12 +1,11 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>Database log</h2>
-    <!--<div class="">-->
-        <!--<button type="button" onclick="start_logging" name="Start" value="Start">Start</button>-->
-        <!--<button type="button" onclick="stop_logging" name="Stop" value="Stop">Stop</button>-->
-    <!--</div>-->
-    {% for message in get_flashed_messages() %}
-        <div class="flash">{{ message }}</div>
-    {% endfor %}
+    <h4>Database log</h4>
+
+    <ul class="collection">
+        {% for message in get_flashed_messages() %}
+            <li class="collection-item">{{ message }}</li>
+        {% endfor %}
+    </ul>
     {% include "layout/pagination.html" %}
 {% endblock %}

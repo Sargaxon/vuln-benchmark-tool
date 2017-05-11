@@ -1,17 +1,18 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>Tests</h2>
+    <h4>Tests</h4>
 
-    <a href="/tests/new">New test</a>
-    <hr />
+    <a class="waves-effect waves-light btn" href="/tests/new">New test</a>
 
-    {% for (identifier, test) in tests.items() %}
-        <div>
-            {{ identifier }}
-            <a href="/tests/edit/{{ identifier }}">Edit</a>
-            <a href="/tests/delete/{{ identifier }}">Delete</a>
-            <a href="/{{ identifier }}/pages">Add pages</a>
-            <a href="/creator/run/{{ identifier }}">Run test</a>
-        </div>
-    {% endfor %}
+    <ul class="collection">
+        {% for (identifier, test) in tests.items() %}
+            <li class="collection-item">
+                {{ identifier }}
+                <a class="secondary-content" href="/tests/delete/{{ identifier }}"><i class="small material-icons">delete</i></a>
+                <a class="secondary-content" href="/tests/edit/{{ identifier }}"><i class="small material-icons">edit</i></a>
+                <a href="/{{ identifier }}/pages">Add pages</a>
+                <a href="/creator/run/{{ identifier }}">Run test</a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

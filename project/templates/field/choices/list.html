@@ -1,14 +1,16 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>Choices <a href="/{{ test_id }}/{{ page_id }}/form">[Back to form]</a></h2>
+    <h4>Choices</h4>
+    <a class="secondary-content" href="/{{ test_id }}/{{ page_id }}/form">[Back to form]</a>
 
-    <a href="/{{ test_id }}/{{ page_id }}/form/fields/{{ field_id }}/choices/new">New choice</a>
-    <hr />
+    <a class="waves-effect waves-light btn" href="/{{ test_id }}/{{ page_id }}/form/fields/{{ field_id }}/choices/new">New choice</a>
 
-    {% for (identifier, value) in choices %}
-        <div>
-            ({{ identifier }} - {{ value }})
-            <a href="/{{ test_id }}/{{ page_id }}/form/fields/{{ field_id }}/choices/delete/{{ identifier }}">Delete</a>
-        </div>
-    {% endfor %}
+    <ul class="collection">
+        {% for (identifier, value) in choices %}
+            <li class="collection-item">
+                ({{ identifier }} - {{ value }})
+                <a class="secondary-content" href="/{{ test_id }}/{{ page_id }}/form/fields/{{ field_id }}/choices/delete/{{ identifier }}"><i class="small material-icons">delete</i></a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

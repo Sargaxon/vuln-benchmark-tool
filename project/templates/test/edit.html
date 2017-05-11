@@ -3,9 +3,10 @@
     <h2>Edit test</h2>
     <form action="/tests/edit/{{ test_id }}" method="POST">
         {{ form.csrf_token }}
-        <dl>
-            <dd>{{ form.identifier.label }} {{ form.identifier(size=45) }} {{ render_error(form.identifier) }}</dd>
-            <dd><input type="submit" value="Update"/></dd>
-        </dl>
+        <div class="input-field col s12">{{ form.identifier.label }} {{ form.identifier(size=45) }} {{ render_error(form.identifier) }}</div>
+
+        <button class="btn waves-effect waves-light" type="submit" name="action">Update
+            <i class="material-icons right">send</i>
+        </button>
     </form>
 {% endblock %}

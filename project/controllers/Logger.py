@@ -17,9 +17,8 @@ def print_log(requests):
                          "<br><b>Method:</b> {2}"
                          "<br><b>Host:</b> {3}"
                          "<br><b>Path:</b> {4}"
-                         "<br><a href='/creator/log/view={1}'>View</a>   "
-                         "<a href='/creator/log/edit={1}'>Edit</a>   "
-                         "<a href='/creator/log/delete={1}'>Delete</a></p>".format(r.datetime, r.id, r.method, r.host, r.path))
+                         "<br><a class='secondary-content' href='/creator/log/view={1}'><i class='small material-icons'>pageview</i></a>"
+                         "<a class='secondary-content' href='/creator/log/delete={1}'><i class='small material-icons'>delete</i></a></p><br /><br />".format(r.datetime, r.id, r.method, r.host, r.path))
         flash(message)
 
 
@@ -54,7 +53,6 @@ def print_view(req_id):
     flash(message)
 
     message = "<p><a href='/creator/log'>Back</a>   " \
-              "<a href='/creator/log/edit={0}'>Edit</a>   " \
               "<a href='/creator/log/delete={0}'>Delete</a></p>".format(req_id)
     flash(message)
 

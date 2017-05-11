@@ -1,6 +1,6 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>View</h2>
+    <h4>View</h4>
     {% for message in get_flashed_messages() %}
         <div class="flash">{{ message|safe }}</div>
     {% endfor %}

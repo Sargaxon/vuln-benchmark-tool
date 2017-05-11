@@ -1,13 +1,14 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>Run test</h2>
+    <h4>Run test</h4>
 
     <form action="/creator/run/{{ test_id }}" method="POST">
         {{ form.csrf_token }}
-        <dl>
-            <dd>{{ form.tool.label }} {{ form.tool}} {{ render_error(form.tool) }}</dd>
-            <dd>{{ form.index.label }} {{ form.index}} {{ render_error(form.index) }}</dd>
-            <dd><input type="submit" value="Browse"/></dd>
-        </dl>
+        <div class="input-field col s12">{{ form.tool}} {{ render_error(form.tool) }}{{ form.tool.label }} </div>
+        <dd class="input-field col s12">{{ form.index}} {{ render_error(form.index) }}{{ form.index.label }} </dd>
+
+        <button class="btn waves-effect waves-light" type="submit" name="action">Browse
+            <i class="material-icons right">play_circle_filled</i>
+        </button>
     </form>
 {% endblock %}

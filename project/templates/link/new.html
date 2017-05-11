@@ -1,11 +1,12 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>New link</h2>
+    <h4>New link</h4>
     <form action="/{{ test_id }}/{{ page_id }}/links/new" method="POST">
         {{ form.csrf_token }}
-        <dl>
-            <dd>{{ form.page.label }} {{ form.page}} {{ render_error(form.page) }}</dd>
-            <dd><input type="submit" value="Create"/></dd>
-        </dl>
+        <div class="input-field col s12">{{ form.page}}{{ form.page.label }}{{ render_error(form.page) }}</div>
+
+        <button class="btn waves-effect waves-light" type="submit" name="action">Create
+            <i class="material-icons right">send</i>
+        </button>
     </form>
 {% endblock %}

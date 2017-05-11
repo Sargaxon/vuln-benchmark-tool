@@ -3,9 +3,10 @@
     <h2>New test</h2>
     <form action="/tests/new" method="POST">
         {{ form.csrf_token }}
-        <dl>
-            <dd>{{ form.identifier.label }} {{ form.identifier(size=45) }} {{ render_error(form.identifier) }}</dd>
-            <dd><input type="submit" value="Create"/></dd>
-        </dl>
+        <div class="input-field col s12">{{ form.identifier.label }} {{ form.identifier(size=45) }} {{ render_error(form.identifier) }}</div>
+
+        <button class="btn waves-effect waves-light" type="submit" name="action">Create
+            <i class="material-icons right">send</i>
+        </button>
     </form>
 {% endblock %}

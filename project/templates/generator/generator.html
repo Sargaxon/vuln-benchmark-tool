@@ -1,22 +1,18 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>Generator</h2>
+    <h4>Generator</h4>
     <form action="/{{ test_id }}/{{ page_id }}/generator" method="POST">
         {{ form.csrf_token }}
-        <h3>Params</h3>
-        <dl>
-            <dd>{{ form.params_num.label }} {{ form.params_num(size=45) }} {{ render_error(form.params_num) }}</dd>
-        </dl>
+        <h5>Params</h5>
+        <div class="input-field col s12">{{ form.params_num.label }} {{ form.params_num(size=45) }} {{ render_error(form.params_num) }}</div>
 
-        <h3>Pages</h3>
-        <dl>
-            <dd>{{ form.links_num.label }} {{ form.links_num(size=45) }} {{ render_error(form.links_num) }}</dd>
-            <dd>{{ form.status.label }} {{ form.status(size=3) }} {{ render_error(form.status) }}</dd>
-            <dd>{{ form.headers.label }} {{ form.headers }} {{ render_error(form.headers) }}</dd>
-        </dl>
-        <hr />
-       <dl>
-            <dd><input type="submit" value="Generate"/></dd>
-        </dl>
+        <h5>Pages</h5>
+        <div class="input-field col s12">{{ form.links_num.label }} {{ form.links_num(size=45) }} {{ render_error(form.links_num) }}</div>
+        <div class="input-field col s12">{{ form.status.label }} {{ form.status(size=3) }} {{ render_error(form.status) }}</div>
+        <div class="input-field col s12">{{ form.headers.label }} {{ form.headers(class="materialize-textarea") }} {{ render_error(form.headers) }}</div>
+
+        <button class="btn waves-effect waves-light" type="submit" name="action">Create
+            <i class="material-icons right">send</i>
+        </button>
     </form>
 {% endblock %}

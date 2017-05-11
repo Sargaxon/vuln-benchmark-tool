@@ -1,12 +1,21 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>Tools analysis</h2>
-    {% for (value, name) in tools %}
-        {% if value != "unknown" %}
-             <a style="text-align:center" href="/analysis/{{ value }}">{{ name }}</a><br>
-        {% endif %}
-    {% endfor %}
-    <a style="text-align:center" href="/analysis/sctr">Scatter charts</a><br>
-    <a style="text-align:center" href="/analysis/all">All tools comparison</a><br>
-    <a style="text-align:center" href="/analysis/testcases">Test case comparison</a><br>
+    <h4>Tools analysis</h4>
+
+    <ul class="collection">
+        {% for (value, name) in tools %}
+            {% if value != "unknown" %}
+                <li class="collection-item">
+                    <a style="text-align:center" href="/analysis/{{ value }}">{{ name }}</a><br>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    <ul class="collection with-header">
+        <li class="collection-header"><h5>Misc analysis</h5></li>
+        <li class="collection-item"><a style="text-align:center" href="/analysis/sctr">Scatter charts</a></li>
+        <li class="collection-item"><a style="text-align:center" href="/analysis/all">All tools comparison</a></li>
+        <li class="collection-item"><a style="text-align:center" href="/analysis/testcases">Test case comparison</a></li>
+    </ul>
 {% endblock %}

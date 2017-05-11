@@ -1,13 +1,14 @@
 {% extends "layout/layout.html" %}
 {% block body %}
-    <h2>New page</h2>
+    <h4>New page</h4>
     <form action="/{{ test_id }}/pages/new" method="POST">
         {{ form.csrf_token }}
-        <dl>
-            <dd>{{ form.identifier.label }} {{ form.identifier(size=45) }} {{ render_error(form.identifier) }}</dd>
-            <dd>{{ form.status.label }} {{ form.status(size=3) }} {{ render_error(form.status) }}</dd>
-            <dd>{{ form.headers.label }} {{ form.headers }} {{ render_error(form.headers) }}</dd>
-            <dd><input type="submit" value="Create"/></dd>
-        </dl>
+        <div class="input-field col s12">{{ form.identifier.label }} {{ form.identifier(size=45) }} {{ render_error(form.identifier) }}</div>
+        <div class="input-field col s12">{{ form.status.label }} {{ form.status(size=3) }} {{ render_error(form.status) }}</div>
+        <div class="input-field col s12">{{ form.headers.label }} {{ form.headers }} {{ render_error(form.headers) }}</div>
+
+        <button class="btn waves-effect waves-light" type="submit" name="action">Create
+            <i class="material-icons right">send</i>
+        </button>
     </form>
 {% endblock %}
