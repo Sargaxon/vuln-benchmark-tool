@@ -5,7 +5,7 @@
         {{ form.csrf_token }}
         <div class="input-field col s12">{{ form.identifier.label }} {{ form.identifier(size=45) }} {{ render_error(form.identifier) }}</div>
         <div class="input-field col s12">{{ form.status.label }} {{ form.status(size=3) }} {{ render_error(form.status) }}</div>
-        <div class="input-field col s12">{{ form.headers.label }} {{ form.headers }} {{ render_error(form.headers) }}</div>
+        <div class="input-field col s12">{{ form.headers.label }} {{ form.headers(class="materialize-textarea") }} {{ render_error(form.headers) }}</div>
 
         <button class="btn waves-effect waves-light" type="submit" name="action">Create
             <i class="material-icons right">send</i>
