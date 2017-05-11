@@ -60,10 +60,9 @@ def print_view(req_id):
 @app.route('/creator/log', defaults={'page': 1})
 @app.route('/creator/log/<int:page>')
 def log(page):
-    requests = Request.query.all()
+    requests = Request.query.offset(page * PER_PAGE).limit(PER_PAGE).all()
 
-    count = len(requests)
-    requests = requests[(page - 1) * PER_PAGE:page * PER_PAGE]
+    count = Request.query.count()
 
     if not requests and page != 1:
         abort(404)
