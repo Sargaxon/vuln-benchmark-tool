@@ -26,7 +26,7 @@ tools = [
 
 PER_PAGE = 25
 
-toolbar = DebugToolbarExtension(app)
+#toolbar = DebugToolbarExtension(app)
 from project.controllers import *
 from project.models import *
 from project.database.Database import session
