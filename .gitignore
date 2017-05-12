@@ -3,5 +3,3 @@
 */__pycache__
 *.DS_STORE
 settings.conf
-*.jpg
-*.png
