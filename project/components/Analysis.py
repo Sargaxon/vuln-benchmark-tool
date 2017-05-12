@@ -16,7 +16,7 @@ request_fields = ['method', 'content']
 
 skip_header_fields = ['accept_datetime', 'h_authorization', 'content_md5', 'date', 'expect',
                       'forwarded', 'h_from', 'if_match', 'if_unmodified_since', 'if_range', 'max_forwards', 'origin',
-                      'proxy_authorization', 'proxy_connection', 'referer', 'te', 'upgrade', 'via', 'warning']
+                      'proxy_authorization', 'proxy_connection', 'te', 'upgrade', 'via', 'warning']
 
 request_header_fields = [
     'Accept', 'Accept-Charset', 'Accept-Encoding', 'Accept-Language', 'Accept-Datetime',
@@ -28,6 +28,7 @@ request_header_fields = [
 
 
 def request_method(tool):
+    """
     # req_sum = Request.query.filter(Request.tool == tool).count()
     # message = Markup("<p><b>General</b><br>"
     #                  "Requests sum: {0}<br>"
@@ -101,9 +102,10 @@ def request_method(tool):
         plt.title("Requests header (%s) ratio" % field)
         plt.savefig('images/{0}{1}_{2}.png'.format(tool, i, field), bbox_inches='tight')
         plt.clf()
-
+"""
 
 def request_comparison():
+    """
     # PIE COMPARISON CHART
     plt.figure(1)
     data = {}
@@ -113,7 +115,7 @@ def request_comparison():
     data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True))
     data = dict(data)
 
-    series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name="")
+    series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name=" ")
     series.plot.pie(subplots=True, labels=None, labeldistance=.5,
                     fontsize=15, figsize=(6, 6), legend=True)
     L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
@@ -156,7 +158,7 @@ def request_comparison():
             data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
             data = dict(data)
 
-        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys())
+        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name=" ")
         series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
                         fontsize=8, figsize=(6, 6), legend=True)
         L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
@@ -192,7 +194,7 @@ def request_comparison():
         data = OrderedDict(sorted(data.items(), key=lambda t: t[1], reverse=True)[:15])
         data = dict(data)
 
-        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys())
+        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name=" ")
         series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
                         fontsize=8, figsize=(6, 6), legend=True)
         L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
@@ -205,9 +207,10 @@ def request_comparison():
         plt.title("Request header (%s) ratio" % field)
         plt.savefig('images/allPie_{0}.png'.format(field), bbox_inches='tight')
         plt.clf()
-
+"""
 
 def scatterplot():
+    """
     all_data = list()
     for i in range(0, len(request_header_fields)):
         plt.figure(1)
@@ -243,7 +246,8 @@ def scatterplot():
                           columns=["Tool", "Header_field", "null", "full"])
 
         sns.set(style="ticks")
-        sns.lmplot(x="null", y="full", data=df, col='Header_field', hue='Tool', legend=False, fit_reg=False)
+        sns.lmplot(x="null", y="full", data=df, col='Header_field', hue='Tool', legend=False, fit_reg=False,
+                   scatter_kws={'s': 300})
         L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=df.Tool)
         for j in range(0, len(data_list)):
             L.get_texts()[j].set_text("{0} ({1}, {2})".format(data_list[j]['Tool'][:15],
@@ -265,7 +269,7 @@ def scatterplot():
 
         sns.set(style="ticks")
         sns.lmplot(x="null", y="full", data=df, col='Tool', hue='Header_field', legend=False, fit_reg=False,
-                   col_wrap=1)
+                   scatter_kws={'s': 300}, col_wrap=1)
         L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=df.Header_field)
         for j in range(0, len(data_list)):
             L.get_texts()[j].set_text("{0} ({1}, {2})".format(data_list[j]['Header_field'][:15],
@@ -273,12 +277,13 @@ def scatterplot():
                                                               data_list[j]['full']))
         plt.savefig('images/sctr{0}_{1}.png'.format(k, tools[k][0]), bbox_inches='tight')
         plt.clf()
-
+"""
 
 def test_case_comparison():
+    """
     settings = Settings.load()
     identifiers = ['params', 'page-10-params', 'page-50-params', 'page-100-params', 'page-500-params',
-                    'page-1000-params', 'page-5000-params', 'page-10000-params', 'form-get', 'form-post', 'randoms']
+                   'page-1000-params', 'page-5000-params', 'page-10000-params', 'form-get', 'form-post', 'randoms']
 
     for identif in identifiers:
         data = {}
@@ -294,7 +299,7 @@ def test_case_comparison():
         data = dict(data)
 
         plt.figure(1)
-        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name=None)
+        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name=" ")
         series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
                         fontsize=8, figsize=(6, 6), legend=True)
         L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
@@ -318,8 +323,7 @@ def test_case_comparison():
         plt.savefig("images/testcasesBar_{0}.png".format(page.identifier), bbox_inches='tight')
         plt.clf()
 
-
-        #random links
+        # random links
         data = {}
         for link in settings.tests["misc"]["randoms"].links:
             for k in range(1, len(tools)):
@@ -333,7 +337,7 @@ def test_case_comparison():
         data = dict(data)
 
         plt.figure(3)
-        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name=None)
+        series = pd.Series(data={k: int(v) for k, v in data.items()}, index=data.keys(), name=" ")
         series.plot.pie(subplots=True, labels=None, labeldistance=.5,  # autopct="%.2f", pctdistance=.7,
                         fontsize=8, figsize=(6, 6), legend=True)
         L = plt.legend(bbox_to_anchor=(1, 0.5), loc="center left", labels=series.index)
@@ -343,7 +347,7 @@ def test_case_comparison():
                                               round(100 * float(list(data.values())[j]) / sum(data.values()), 2),
                                               list(data.values())[j]))
         plt.subplots_adjust(right=0.8)
-        plt.title("Test Case Comparison ({0})".format(page.identifier))
+        plt.title("Test Case (miscellaneous) sum comparison")
         plt.savefig("images/testcasesPieSumRandom.png", bbox_inches='tight')
         plt.clf()
 
@@ -356,3 +360,4 @@ def test_case_comparison():
         ax.set_ylabel("Test case (miscellaneous) sum comparison", fontsize=15)
         plt.savefig("images/testcasesBarSumRandom.png", bbox_inches='tight')
         plt.clf()
+    """

@@ -16,12 +16,12 @@ app.debug = True
 
 tools = [
     ("unknown", "Unknown"),
+    ("arachni", "Arachni Scanner"),
+    ("tool_b", "Tool B"),
     ("zaproxy", "OWASP ZAP"),
+    ("skipfish", "Skipfish"),
     ("w3af", "W3af"),
     ("tool_n", "Tool N"),
-    ("skipfish", "Skipfish"),
-    ("arachni", "Arachni Scanner"),
-    ("tool_b", "Tool B")
 ]
 
 PER_PAGE = 25
